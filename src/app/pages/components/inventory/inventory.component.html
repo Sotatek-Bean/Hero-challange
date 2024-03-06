@@ -2,7 +2,7 @@
   <h3>Weapon</h3>
   <div class="inventory-container d-flex flex-wrap">
     @for (weapon of weapons; track $index) {
-      <div class="card flex-1-20">
+      <div class="card flex-1-20" [ngClass]="hero.equip[weapon.type] === weapon.id ? 'equiped' : null">
         <div class="name">
           {{weapon.name}}
         </div>
@@ -23,13 +23,17 @@
             Sell: {{weapon.level * 10}}
           </span>
         </div>
+        <div class="d-flex justify-content-between">
+          <button (click)="equipItem(weapon)">{{hero.equip[weapon.type] === weapon.id ? 'Remove' : 'Equip'}}</button>
+          <button (click)="sellItem(weapon)">Sell</button>
+        </div>
       </div>
     }
   </div>
   <h3>Armor</h3>
   <div class="inventory-container d-flex flex-wrap">
     @for (armor of armors; track $index) {
-      <div class="card flex-1-20">
+      <div class="card flex-1-20" [ngClass]="hero.equip[armor.type] === armor.id ? 'equiped' : null">
         <div class="name">
           {{armor.name}}
         </div>
@@ -49,6 +53,11 @@
           <span>
             Sell: {{armor.level * 10}}
           </span>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <button (click)="equipItem(armor)">{{hero.equip[armor.type] === armor.id ? 'Remove' : 'Equip'}}</button>
+          <button (click)="sellItem(armor)">Sell</button>
         </div>
       </div>
     }

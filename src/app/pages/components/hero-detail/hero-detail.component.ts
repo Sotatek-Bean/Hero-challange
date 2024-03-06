@@ -1,8 +1,8 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
-import { Hero } from '../../../models/common-models';
+import { Hero, Stats } from '../../../models/common-models';
 import { EntityService } from '../../../services/entity.service';
 import { FormsModule } from '@angular/forms';
 
@@ -13,12 +13,9 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule]
 })
-export class HeroDetailComponent implements OnInit {
+export class HeroDetailComponent {
+
   @Input({required:true}) hero?: Hero;
-  private entityService = inject(EntityService);
-
-
-  ngOnInit(): void {
-  }
+  entityService = inject(EntityService);
 
 }

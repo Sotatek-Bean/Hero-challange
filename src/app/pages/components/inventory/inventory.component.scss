@@ -8,5 +8,13 @@
     .name {
       font-weight: bold;
     }
+    button {
+      font-size: 1rem;
+      padding: 0.5rem;
+      margin: 10px 0 0 0;
+    }
+  }
+  .equiped {
+    box-shadow:0 5px 10px 5px rgba(129, 179, 139, 0.76);
   }
 }

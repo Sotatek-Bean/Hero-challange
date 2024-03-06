@@ -4,6 +4,15 @@
     <div>
       <label for="hero-name">Hero name: </label>
       <input id="hero-name" [(ngModel)]="hero.name" placeholder="Hero name"/>
+      <div class="stat-details d-flex justify-content-between mt-1">
+        @if (entityService.getHeroFightStats(this.hero.id) | async; as fightStats) {
+          <span>Atk: {{fightStats.atk}}</span>
+          <span>Def: {{fightStats.def}}</span>
+          <span>Speed: {{fightStats.speed}}</span>
+          <span>HP: {{fightStats.health}}</span>
+          <span>Level: {{hero.level}}</span>
+        }
+      </div>
       <img src="assets/sprite1.png" alt="avatar">
     </div>
   </div>

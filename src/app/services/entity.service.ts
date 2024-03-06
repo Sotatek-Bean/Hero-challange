@@ -11,6 +11,7 @@ export class EntityService {
   items$ = new BehaviorSubject(BASE_ITEMS);
 
   getHeroes(onlyUnlocked = false): Observable<Hero[]> {
+    // filter unlocked hero and sort to top
     return this.heroes$.pipe(map(heroes => {
       return heroes.filter(h => !onlyUnlocked || h.unlocked).sort((a, b) => {
         return a.unlocked ? -1 : b.unlocked ? 1 : 0
@@ -33,6 +34,7 @@ export class EntityService {
   getHero(id: number): Observable<Hero | undefined> {
     return this.heroes$.pipe(map(heroes => heroes.find(h => h.id === id)));
   }
+  // calculate true stats of hero with items
   getHeroFightStats(heroId: number) {
     return this.heroes$.pipe(switchMap((heroes) => {
       const hero = heroes.find(h => h.id === heroId);
@@ -61,7 +63,7 @@ export class EntityService {
       return of(undefined);
     }));
   }
-
+  // calculate true stats combine with level (stats = base * level)
   convertTrueStats(stats: Stats, level: number): Stats {
     return {
       atk: (stats.atk || 0) * level,

@@ -1,0 +1,6 @@
+<h2>Top Heroes</h2>
+<div class="heroes-menu">
+  <a *ngFor="let hero of heroes" (click)="setHero(hero)">
+    {{hero.name}}
+  </a>
+</div>

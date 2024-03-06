@@ -1,0 +1,10 @@
+@if (hero) {
+  <div class="card">
+    <h2>{{hero.name | uppercase}} Details</h2>
+    <div>
+      <label for="hero-name">Hero name: </label>
+      <input id="hero-name" [(ngModel)]="hero.name" placeholder="Hero name"/>
+      <img src="assets/sprite1.png" alt="avatar">
+    </div>
+  </div>
+}

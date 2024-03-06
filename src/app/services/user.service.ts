@@ -3,7 +3,7 @@ import { BehaviorSubject} from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  credit$ = new BehaviorSubject(0);
+  credit$ = new BehaviorSubject(200);
   get money() {
     return this.credit$.value;
   }

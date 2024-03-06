@@ -14,7 +14,6 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule]
 })
 export class HeroDetailComponent {
-
   @Input({required:true}) hero?: Hero;
   entityService = inject(EntityService);
 

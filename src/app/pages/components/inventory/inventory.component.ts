@@ -31,6 +31,7 @@ export class InventoryComponent implements OnInit {
     .subscribe(weapons => this.weapons = weapons);
   }
 
+  // equip item to hero
   equipItem(item: Item) {
     if (this.hero) {
       this.hero.equip[item.type] = this.hero.equip[item.type] === item.id ? undefined : item.id;

@@ -24,7 +24,11 @@ export class HeroesComponent implements OnInit {
 
   getHeroes(): void {
     this.entityService.getHeroes()
-    .subscribe(heroes => this.heroes = heroes);
+    .subscribe(heroes => {
+      this.heroes = heroes;
+      if (heroes.length) {
+        this.viewHero(heroes[0]);
+      }});
   }
 
   viewHero(hero: Hero) {

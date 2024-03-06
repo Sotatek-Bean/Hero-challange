@@ -3,7 +3,7 @@
   <ul class="heroes">
     <li *ngFor="let hero of heroes">
       <a (click)="viewHero(hero)">
-        <span class="badge" [ngClass]="hero.unlocked ? 'unlocked' : ''">{{hero.level}}</span> {{hero.name}}
+        <span class="badge" [ngClass]="hero.unlocked ? 'unlocked' : ''">Cost: {{hero.cost}}</span> {{hero.name}}
       </a>
     </li>
   </ul>

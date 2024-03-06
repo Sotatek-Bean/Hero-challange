@@ -13,6 +13,12 @@
         }
       </div>
       <img src="assets/sprite1.png" alt="avatar">
+      <div class="d-flex justify-content-between">
+      <h4>Cost: {{hero.cost}}</h4>
+      @if (!hero.unlocked) {
+          <button (click)="unlockHero(hero)">Unlock</button>
+      }
+    </div>
     </div>
   </div>
 }

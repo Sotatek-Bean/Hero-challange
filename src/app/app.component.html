@@ -1,4 +1,9 @@
-<h1>{{title}}</h1>
+<div class="d-flex justify-content-between">
+  <h1>{{title}}</h1>
+  <h4>
+    Money: {{userService.money | number}}
+  </h4>
+</div>
 <nav>
   <a routerLink="/dashboard">Fight</a>
   <a routerLink="/heroes">Player</a>

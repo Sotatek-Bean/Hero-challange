@@ -19,7 +19,6 @@ export interface Entity extends Stats {
 
 export interface Stats {
   atk?: number;
-  def?: number;
   speed?: number;
   health?: number;
 }

@@ -48,13 +48,11 @@ export class EntityService {
         }
         const res: Stats = {
           atk: 0,
-          def: 0,
           health: 0,
           speed: 0,
         }
         arrayStats.forEach(s => {
           res.atk = (res.atk || 0) + (s.atk || 0);
-          res.def = (res.def || 0) + (s.def || 0);
           res.speed = (res.speed || 0) + (s.speed || 0);
           res.health = (res.health || 0) + (s.health || 0);
         })
@@ -67,7 +65,6 @@ export class EntityService {
   convertTrueStats(stats: Stats, level: number): Stats {
     return {
       atk: (stats.atk || 0) * level,
-      def: (stats.def || 0) * level,
       health: (stats.health || 0) * level,
       speed: (stats.speed || 0) * level,
     }

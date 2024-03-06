@@ -7,7 +7,6 @@
       <div class="stat-details d-flex justify-content-between mt-1">
         @if (entityService.getHeroFightStats(this.hero.id) | async; as fightStats) {
           <span>Atk: {{fightStats.atk}}</span>
-          <span>Def: {{fightStats.def}}</span>
           <span>Speed: {{fightStats.speed}}</span>
           <span>HP: {{fightStats.health}}</span>
           <span>Level: {{hero.level}}</span>

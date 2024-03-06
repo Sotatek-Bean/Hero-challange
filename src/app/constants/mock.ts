@@ -9,5 +9,7 @@ export const HEROES: Hero[] = [
 // first init data inventory's items
 export const BASE_ITEMS: Item[] = [
   { id: 1, name: 'Base Armor', avatar: 'assets/sprite1.png', type: EntityType.armor, level: 2, health: 10},
-  { id: 2, name: 'Base Weapon', avatar: 'assets/sprite1.png', type: EntityType.weapon, level: 1, atk: 1, speed: 1},
+  { id: 2, name: 'Base Weapon', avatar: 'assets/sprite1.png', type: EntityType.weapon, level: 1, atk: 2, speed: 1},
+  { id: 3, name: 'Weapon', avatar: 'assets/sprite1.png', type: EntityType.weapon, level: 1, atk: 3, speed: 0},
+  { id: 4, name: 'Gun', avatar: 'assets/sprite1.png', type: EntityType.weapon, level: 1, atk: 1, speed: 2},
 ];

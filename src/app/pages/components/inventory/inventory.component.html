@@ -1,0 +1,56 @@
+@if (hero) {
+  <h3>Weapon</h3>
+  <div class="inventory-container d-flex flex-wrap">
+    @for (weapon of weapons; track $index) {
+      <div class="card flex-1-20">
+        <div class="name">
+          {{weapon.name}}
+        </div>
+        <div class="d-flex justify-content-between">
+          <span>
+            Atk: {{weapon.atk}}
+          </span>
+          <span>
+            Speed: {{weapon.speed}}
+          </span>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <span>
+            Level: {{weapon.level}}
+          </span>
+          <span>
+            Sell: {{weapon.level * 10}}
+          </span>
+        </div>
+      </div>
+    }
+  </div>
+  <h3>Armor</h3>
+  <div class="inventory-container d-flex flex-wrap">
+    @for (armor of armors; track $index) {
+      <div class="card flex-1-20">
+        <div class="name">
+          {{armor.name}}
+        </div>
+        <div class="d-flex justify-content-between">
+          <span>
+            Def: {{armor.def}}
+          </span>
+          <span>
+            HP: {{armor.health}}
+          </span>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <span>
+            Level: {{armor.level}}
+          </span>
+          <span>
+            Sell: {{armor.level * 10}}
+          </span>
+        </div>
+      </div>
+    }
+  </div>
+}

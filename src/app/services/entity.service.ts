@@ -2,14 +2,21 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Observable, filter, map, of, switchMap} from 'rxjs';
 
-import { EntityType, Hero, Item, Stats } from '../models/common-models';
-import { BASE_ITEMS, HEROES } from '../constants/mock';
+import { DefaultItem, EntityType, Hero, Item, Monster, Stats } from '../models/common-models';
+import { BASE_ITEMS, HEROES, MONSTER } from '../constants/mock';
+import { now } from 'lodash';
 
 @Injectable({ providedIn: 'root' })
 export class EntityService {
   heroes$ = new BehaviorSubject(HEROES);
   items$ = new BehaviorSubject(BASE_ITEMS);
-
+  getRandomInt(max: number) {
+    return Math.floor(Math.random() * max);
+  }
+  generateMonsterFight(hero: Hero): Monster {
+    const monster: Monster = {...MONSTER[this.getRandomInt(MONSTER.length)], level: hero.level};
+    return {...monster, ...this.convertTrueStats(monster, monster.level)};
+  }
   getHeroes(onlyUnlocked = false): Observable<Hero[]> {
     // filter unlocked hero and sort to top
     return this.heroes$.pipe(map(heroes => {
@@ -25,6 +32,18 @@ export class EntityService {
 
   getArmors(): Observable<Item[]> {
     return this.items$.pipe(map(items => items.filter(i => i.type === EntityType.armor)));
+  }
+
+  generateItem(hero: Hero) {
+    const item = DefaultItem(hero, now());
+    item.level = this.getRandomInt(hero.level + 1);
+    if (item.type === EntityType.armor) {
+      item.health = this.getRandomInt(50);
+      item.speed = this.getRandomInt(5);
+    } else {
+      item.atk = this.getRandomInt(5);
+      item.speed = this.getRandomInt(5);
+    }
   }
 
   removeItem(item: Item) {

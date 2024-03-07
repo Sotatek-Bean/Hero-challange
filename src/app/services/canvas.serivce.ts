@@ -2,16 +2,18 @@ import { Injectable } from '@angular/core';
 import Konva from 'konva';
 import { Stage } from 'konva/lib/Stage';
 import { Hero, Monster } from '../models/common-models';
+import { Actions, PlayLoopService } from './play-loop.service';
 
 @Injectable()
 export class CanvasService {
   field: Stage | undefined;
   layer = new Konva.Layer();
-  initAction() {
+  initAction(playLoopService: PlayLoopService) {
     const actionGroup = new Konva.Group({
       x: 0,
       y: 0,
     });
+    actionGroup.hide();
     const attackGroup = new Konva.Group({
       x: 430,
       y: 500,
@@ -26,9 +28,11 @@ export class CanvasService {
     healGroup.add(this.createButtonLayer(0, 0));
     healGroup.add(this.createTextLayer(35,20, 'Heal'))
     healGroup.on('click', () => {
+      playLoopService.doAction(Actions.heal);
       actionGroup.hide();
     });
     attackGroup.on('click', () => {
+      playLoopService.doAction(Actions.attack);
       actionGroup.hide();
     });
     actionGroup.add(attackGroup);

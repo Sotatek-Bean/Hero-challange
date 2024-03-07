@@ -134,6 +134,12 @@ export class CanvasService {
       y: 200,
     });
     this.monsterGroup.add(this.createImageLayer(0, 0, 250, 250, monster.avatar || monster.name));
+    this.initMonsterInfo(monster);
+    this.layer.add(this.monsterGroup);
+  }
+
+  initMonsterInfo(monster: Monster) {
+    this.monsterInfoGroup.destroy();
     this.monsterInfoGroup = new Konva.Group({
       x: 700,
       y: 200,
@@ -141,7 +147,6 @@ export class CanvasService {
     this.monsterInfoGroup.add(this.createTextLayer(100,260, `${monster.name}`, {fill: 'red'}));
     this.monsterInfoGroup.add(this.createTextLayer(90,280, `Hp: ${monster.health}/${monster.maxHp}`, {fill: 'red'}));
     this.layer.add(this.monsterInfoGroup);
-    this.layer.add(this.monsterGroup);
   }
   initFieldCanvas(): void {
     const width = 1082;

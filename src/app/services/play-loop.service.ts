@@ -8,6 +8,7 @@ import { Subject, firstValueFrom } from 'rxjs';
 import { MessageService } from './message.service';
 import { UserService } from './user.service';
 import { CanvasService } from './canvas.serivce';
+import { Group } from 'konva/lib/Group';
 export enum Actions {
   attack = 'attack',
   heal = 'heal'
@@ -21,6 +22,7 @@ export class PlayLoopService {
   waitingAction = false;
   paused = true;
   action$ = new Subject<Actions>();
+  actionGroup: Group | undefined;
   private entityService = inject(EntityService);
   private messageService = inject(MessageService);
   private userService = inject(UserService);
@@ -35,6 +37,7 @@ export class PlayLoopService {
     if (!this.fightHero) {
       return;
     }
+    this.actionGroup = this.canvasService.initAction(this);
     this.hero = cloneDeep(this.fightHero);
     this.paused = false;
     this.waitingAction = false;
@@ -100,7 +103,7 @@ export class PlayLoopService {
   getUserAction(): Promise<Actions> {
     this.messageService.add('Wait User action');
     this.waitingAction = true;
-    this.canvasService.initAction();
+    this.actionGroup?.show();
     return firstValueFrom(this.action$);
   }
 

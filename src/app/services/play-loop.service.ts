@@ -7,6 +7,7 @@ import {
 import { Subject, firstValueFrom } from 'rxjs';
 import { MessageService } from './message.service';
 import { UserService } from './user.service';
+import { CanvasService } from './canvas.serivce';
 export enum Actions {
   attack = 'attack',
   heal = 'heal'
@@ -23,6 +24,7 @@ export class PlayLoopService {
   private entityService = inject(EntityService);
   private messageService = inject(MessageService);
   private userService = inject(UserService);
+  private canvasService = inject(CanvasService);
   constructor() {}
 
   setCurrentHero(hero: Hero) {
@@ -38,6 +40,7 @@ export class PlayLoopService {
     this.waitingAction = false;
     this.monster = this.entityService.generateMonsterFight(this.hero);
     this.monster.maxHp = this.monster.health;
+    this.canvasService.initMonster(this.monster);
     this.turnQueue = [this.hero, this.monster].sort((a,b) => (b.speed || 0) - (a.speed || 0));
     this.messageService.add('Battle Started');
     this.startTurnLoop(this.hero, this.monster, this.fightHero);
@@ -97,6 +100,7 @@ export class PlayLoopService {
   getUserAction(): Promise<Actions> {
     this.messageService.add('Wait User action');
     this.waitingAction = true;
+    this.canvasService.initAction();
     return firstValueFrom(this.action$);
   }
 

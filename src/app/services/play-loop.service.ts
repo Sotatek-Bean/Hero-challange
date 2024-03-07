@@ -37,9 +37,10 @@ export class PlayLoopService {
     this.paused = false;
     this.waitingAction = false;
     this.monster = this.entityService.generateMonsterFight(this.hero);
+    this.monster.maxHp = this.monster.health;
     this.turnQueue = [this.hero, this.monster].sort((a,b) => (b.speed || 0) - (a.speed || 0));
     this.messageService.add('Battle Started');
-    this.startTurnLoop(this.hero, this.monster);
+    this.startTurnLoop(this.hero, this.monster, this.fightHero);
   }
   endBattle(playerWin: boolean, hero: Hero) {
     this.messageService.add('Battle Ended');
@@ -56,28 +57,28 @@ export class PlayLoopService {
     this.paused = true;
     this.waitingAction = false;
   }
-  async startTurnLoop(hero: Hero, monster: Monster) {
+  async startTurnLoop(hero: Hero, monster: Monster, heroBase: Hero) {
     if (this.turnQueue[0].type === EntityType.hero) {
       const action = await this.getUserAction();
       switch(action) {
         case Actions.attack:
           this.messageService.add('Hero attack');
           monster.health = monster.health - hero.atk;
-          this.messageService.add(`Monster HP: ${this.monster?.health}`);
           break;
         case Actions.heal:
           const healPercent = Math.round((hero.level / (10 + hero.level)) * 100);
-          this.messageService.add(`Hero use heal ${healPercent} %`);
-          const heal = Math.round(hero.health*healPercent/100);
-          hero.health = hero.health + heal;
+          const heal = Math.round(heroBase.health*healPercent/100);
           this.messageService.add(`Hero healed ${heal} HP`);
-          this.messageService.add(`Hero HP: ${this.hero?.health}`);
+          if (hero.health + heal > heroBase.health) {
+            hero.health = heroBase.health;
+            break;
+          }
+          hero.health = hero.health + heal;
           break;
       }
     } else {
       this.messageService.add('Monster attack');
       hero.health = hero.health - monster.atk;
-      this.messageService.add(`Hero HP: ${this.hero?.health}`);
     }
 
     if (hero.health <=0 || monster.health <=0) {
@@ -86,7 +87,7 @@ export class PlayLoopService {
     }
     this.turnQueue.push(this.turnQueue[0]);
     this.turnQueue.shift();
-    this.startTurnLoop(hero, monster);
+    this.startTurnLoop(hero, monster, heroBase);
   }
 
   doAction(action: Actions) {

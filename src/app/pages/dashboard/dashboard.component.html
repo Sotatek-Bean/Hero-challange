@@ -11,7 +11,7 @@
       <div>
         <span>Atk: {{fightHero.atk}}</span>
       <span>Speed: {{fightHero.speed}}</span>
-      <span>HP: {{fightHero.health}}</span>
+      <span>HP: {{fightHero.health}}/{{playLoopService.fightHero?.health}}</span>
       <span>Level: {{fightHero.level}}</span>
       </div>
       <span>Name: {{fightHero.name}}</span>
@@ -22,7 +22,7 @@
         <div>
           <span>Atk: {{fightMonster.atk}}</span>
         <span>Speed: {{fightMonster.speed}}</span>
-        <span>HP: {{fightMonster.health}}</span>
+        <span>HP: {{fightMonster.health}}/{{fightMonster.maxHp}}</span>
         <span>Level: {{fightMonster.level}}</span>
         </div>
         <span>Name: {{fightMonster.name}}</span>

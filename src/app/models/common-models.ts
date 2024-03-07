@@ -20,6 +20,7 @@ export interface Item extends Entity {
 }
 
 export interface Entity extends Stats, Identity {
+  maxHp?: number;
   id: number;
   level: number;
   type: EntityType;

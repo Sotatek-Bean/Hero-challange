@@ -2,18 +2,22 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Hero } from '../../models/common-models';
 import { EntityService } from '../../services/entity.service';
 import { CommonModule } from '@angular/common';
+import { Actions, PlayLoopService } from '../../services/play-loop.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: [ './dashboard.component.css' ],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule],
+  providers: [PlayLoopService]
 })
 export class DashboardComponent implements OnInit {
   heroes: Hero[] = [];
-
+  readonly action = Actions;
   private entityService = inject(EntityService);
+  playLoopService = inject(PlayLoopService);
 
   ngOnInit(): void {
     this.getHeroes();
@@ -24,7 +28,11 @@ export class DashboardComponent implements OnInit {
       .subscribe(heroes => this.heroes = heroes);
   }
 
-  setHero(hero: Hero) {
-
+  async setHero(hero: Hero) {
+    if (!this.playLoopService.paused) {
+      return;
+    }
+    const heroFightStats = {...hero, ...(await firstValueFrom(this.entityService.getHeroFightStats(hero.id)))};
+    this.playLoopService.setCurrentHero(heroFightStats);
   }
 }

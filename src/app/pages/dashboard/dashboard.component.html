@@ -4,3 +4,39 @@
     {{hero.name}}
   </a>
 </div>
+@if (playLoopService.hero; as fightHero) {
+  <div class="d-flex justify-content-between">
+    <div>
+      <img [src]="fightHero.avatar" alt="" width="150px">
+      <div>
+        <span>Atk: {{fightHero.atk}}</span>
+      <span>Speed: {{fightHero.speed}}</span>
+      <span>HP: {{fightHero.health}}</span>
+      <span>Level: {{fightHero.level}}</span>
+      </div>
+      <span>Name: {{fightHero.name}}</span>
+    </div>
+    @if (playLoopService.monster; as fightMonster) {
+      <div>
+        <img [src]="fightMonster.avatar" alt="" width="150px">
+        <div>
+          <span>Atk: {{fightMonster.atk}}</span>
+        <span>Speed: {{fightMonster.speed}}</span>
+        <span>HP: {{fightMonster.health}}</span>
+        <span>Level: {{fightMonster.level}}</span>
+        </div>
+        <span>Name: {{fightMonster.name}}</span>
+      </div>
+    }
+  </div>
+
+  @if (playLoopService.paused) {
+    <button (click)="playLoopService.startBattle()">Start Battle</button>
+  }
+  @if (playLoopService.waitingAction) {
+    <button (click)="playLoopService.doAction(action.attack)">Attack</button>
+    <button (click)="playLoopService.doAction(action.heal)">Heal</button>
+
+  }
+}
+

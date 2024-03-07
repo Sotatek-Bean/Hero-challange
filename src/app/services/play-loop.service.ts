@@ -41,6 +41,8 @@ export class PlayLoopService {
     }
     this.actionGroup = this.canvasService.initAction(this);
     this.hero = cloneDeep(this.fightHero);
+    this.hero.maxHp = this.hero.health;
+    this.canvasService.initHeroInfo(this.hero);
     this.paused = false;
     this.monster = this.entityService.generateMonsterFight(this.hero);
     this.monster.maxHp = this.monster.health;
@@ -68,6 +70,7 @@ export class PlayLoopService {
       switch(action) {
         case Actions.attack:
           monster.health = monster.health - hero.atk;
+          this.canvasService.initMonsterInfo(monster);
           break;
         case Actions.heal:
           const healPercent = Math.round((hero.level / (10 + hero.level)) * 100);
@@ -92,7 +95,7 @@ export class PlayLoopService {
       })
       hero.health = hero.health - monster.atk;
     }
-
+    this.canvasService.initHeroInfo(hero);
     if (hero.health <=0 || monster.health <=0) {
       this.endBattle(hero.health > 0, hero);
       return;

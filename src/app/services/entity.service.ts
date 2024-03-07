@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable, filter, map, of, switchMap} from 'rxjs';
+import { BehaviorSubject, Observable, map, of, switchMap} from 'rxjs';
 
 import { DefaultItem, EntityType, Hero, Item, Monster, Stats } from '../models/common-models';
-import { BASE_ITEMS, HEROES, MONSTER } from '../constants/mock';
+import { ARMOR_TYPES, BASE_ITEMS, HEROES, MONSTER, WEAPON_TYPES } from '../constants/mock';
 import { now } from 'lodash';
 
 @Injectable({ providedIn: 'root' })
@@ -35,16 +35,19 @@ export class EntityService {
   }
 
   generateItem(hero: Hero): Item {
-    const item = DefaultItem(now(), '');
+    const item = DefaultItem(now());
     item.level = this.getRandomInt(hero.level + 1, 1);
+    let identity = {name: ''};
     if (item.type === EntityType.armor) {
       item.health = this.getRandomInt(50, 1);
       item.speed = this.getRandomInt(5, 1);
+      identity = ARMOR_TYPES[this.getRandomInt(ARMOR_TYPES.length)];
     } else {
       item.atk = this.getRandomInt(5, 1);
       item.speed = this.getRandomInt(5, 1);
+      identity = WEAPON_TYPES[this.getRandomInt(WEAPON_TYPES.length)];
     }
-    return item;
+    return {...item, ...identity};
   }
 
   addItem(item: Item) {

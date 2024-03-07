@@ -7,7 +7,7 @@ import {
 import { Subject, firstValueFrom } from 'rxjs';
 import { MessageService } from './message.service';
 import { UserService } from './user.service';
-import { CanvasService } from './canvas.serivce';
+import { AnimationType, CanvasService } from './canvas.serivce';
 import { Group } from 'konva/lib/Group';
 export enum Actions {
   attack = 'attack',
@@ -45,7 +45,6 @@ export class PlayLoopService {
     this.monster.maxHp = this.monster.health;
     this.canvasService.initMonster(this.monster);
     this.turnQueue = [this.hero, this.monster].sort((a,b) => (b.speed || 0) - (a.speed || 0));
-    this.messageService.add('Battle Started');
     this.startTurnLoop(this.hero, this.monster, this.fightHero);
   }
   endBattle(playerWin: boolean, hero: Hero) {
@@ -60,8 +59,7 @@ export class PlayLoopService {
         this.messageService.add(`Drop new item: ${drop.name}`);
       }
     }
-    this.paused = true;
-    this.waitingAction = false;
+    this.canvasService.initStartBtn(this);
   }
   async startTurnLoop(hero: Hero, monster: Monster, heroBase: Hero) {
     if (this.turnQueue[0].type === EntityType.hero) {
@@ -83,7 +81,15 @@ export class PlayLoopService {
           break;
       }
     } else {
-      this.messageService.add('Monster attack');
+      const animation = this.canvasService.startAnimation(this.canvasService.monsterGroup, AnimationType.attack, 100, 300);
+      await new Promise<void>((resolve) => {
+        setTimeout(() => {
+          animation.stop();
+          this.canvasService.monsterGroup.x(700);
+          this.canvasService.monsterGroup.y(200);
+          resolve();
+        }, 1000);
+      })
       hero.health = hero.health - monster.atk;
     }
 

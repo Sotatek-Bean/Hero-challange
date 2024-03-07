@@ -31,6 +31,7 @@ export class PlayLoopService {
   setCurrentHero(hero: Hero) {
     this.fightHero = hero;
     this.hero = cloneDeep(this.fightHero);
+    this.hero.maxHp = this.hero.health;
     this.canvasService.initHero(this.hero);
     this.canvasService.initStartBtn(this);
   }

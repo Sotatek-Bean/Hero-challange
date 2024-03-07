@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import Konva from 'konva';
 import { Stage } from 'konva/lib/Stage';
-import { Hero, Monster } from '../models/common-models';
+import { Entity, Hero, Monster } from '../models/common-models';
 import { Actions, PlayLoopService } from './play-loop.service';
 import { Group } from 'konva/lib/Group';
 export enum AnimationType {
@@ -113,6 +113,16 @@ export class CanvasService {
     });
     this.layer.add(this.startBtnGroup);
   }
+
+  infoGroup(entity: Entity, inheritGroup: Group) {
+    const group = new Konva.Group({
+      x: inheritGroup.x(),
+      y: inheritGroup.y(),
+    });
+    group.add(this.createTextLayer(100,260, `${entity.name}`));
+    group.add(this.createTextLayer(100,280, `Hp: ${entity.health}/${entity.maxHp}`));
+    return group;
+  }
   initHero(hero: Hero) {
     this.heroGroup.destroy();
     this.heroGroup = new Konva.Group({
@@ -120,11 +130,13 @@ export class CanvasService {
       y: 350,
     });
     this.heroGroup.add(this.createImageLayer(0, 0, 250, 250, hero.avatar || hero.name));
+    this.layer.add(this.infoGroup(hero, this.heroGroup));
     this.layer.add(this.heroGroup);
   }
-  initMonster(hero: Monster) {
+  initMonster(monster: Monster) {
     this.monsterGroup.destroy();
-    this.monsterGroup.add(this.createImageLayer(0, 0, 250, 250, hero.avatar || hero.name));
+    this.monsterGroup.add(this.createImageLayer(0, 0, 250, 250, monster.avatar || monster.name));
+    this.layer.add(this.infoGroup(monster, this.monsterGroup));
     this.layer.add(this.monsterGroup);
   }
   initFieldCanvas(): void {

@@ -37,7 +37,5 @@ export class DashboardComponent implements OnInit {
     }
     const heroFightStats = {...hero, ...(await firstValueFrom(this.entityService.getHeroFightStats(hero.id)))};
     this.playLoopService.setCurrentHero(heroFightStats);
-    this.canvasService.initHero(heroFightStats);
-    this.canvasService.initStartBtn(this.playLoopService);
   }
 }

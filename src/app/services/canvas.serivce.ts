@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import Konva from 'konva';
 import { Stage } from 'konva/lib/Stage';
-import { Entity, Hero, Monster } from '../models/common-models';
+import { Hero, Monster } from '../models/common-models';
 import { Actions, PlayLoopService } from './play-loop.service';
 import { Group } from 'konva/lib/Group';
 export enum AnimationType {
@@ -12,19 +12,11 @@ export enum AnimationType {
 export class CanvasService {
   field: Stage | undefined;
   layer = new Konva.Layer();
-  heroGroup = new Konva.Group({
-    x: 100,
-    y: 350,
-  });
-  monsterGroup = new Konva.Group({
-    x: 700,
-    y: 200,
-  });
-
-  startBtnGroup = new Konva.Group({
-    x: 490,
-    y: 300,
-  });
+  heroGroup = new Konva.Group();
+  heroInfoGroup = new Konva.Group();
+  monsterGroup = new Konva.Group();
+  monsterInfoGroup = new Konva.Group();
+  startBtnGroup = new Konva.Group();
   initAction(playLoopService: PlayLoopService) {
     const actionGroup = new Konva.Group({
       x: 0,
@@ -70,6 +62,7 @@ export class CanvasService {
     return actionGroup;
   }
   startAnimation(target: Group, type: AnimationType, posX: number, possY: number) {
+    target.moveToTop();
     const animation = new Konva.Animation((frame) => {
       if (frame) {
         let duration = 1000; //ms
@@ -114,15 +107,6 @@ export class CanvasService {
     this.layer.add(this.startBtnGroup);
   }
 
-  infoGroup(entity: Entity, inheritGroup: Group) {
-    const group = new Konva.Group({
-      x: inheritGroup.x(),
-      y: inheritGroup.y(),
-    });
-    group.add(this.createTextLayer(100,260, `${entity.name}`));
-    group.add(this.createTextLayer(100,280, `Hp: ${entity.health}/${entity.maxHp}`));
-    return group;
-  }
   initHero(hero: Hero) {
     this.heroGroup.destroy();
     this.heroGroup = new Konva.Group({
@@ -130,13 +114,33 @@ export class CanvasService {
       y: 350,
     });
     this.heroGroup.add(this.createImageLayer(0, 0, 250, 250, hero.avatar || hero.name));
-    this.layer.add(this.infoGroup(hero, this.heroGroup));
+    this.initHeroInfo(hero);
     this.layer.add(this.heroGroup);
+  }
+  initHeroInfo(hero: Hero) {
+    this.heroInfoGroup.destroy();
+    this.heroInfoGroup = new Konva.Group({
+      x: 100,
+      y: 350,
+    });
+    this.heroInfoGroup.add(this.createTextLayer(100,260, `${hero.name}`, {fill: 'red'}));
+    this.heroInfoGroup.add(this.createTextLayer(90,280, `Hp: ${hero.health}/${hero.maxHp}`, {fill: 'red'}));
+    this.layer.add(this.heroInfoGroup);
   }
   initMonster(monster: Monster) {
     this.monsterGroup.destroy();
+    this.monsterGroup = new Konva.Group({
+      x: 700,
+      y: 200,
+    });
     this.monsterGroup.add(this.createImageLayer(0, 0, 250, 250, monster.avatar || monster.name));
-    this.layer.add(this.infoGroup(monster, this.monsterGroup));
+    this.monsterInfoGroup = new Konva.Group({
+      x: 700,
+      y: 200,
+    });
+    this.monsterInfoGroup.add(this.createTextLayer(100,260, `${monster.name}`, {fill: 'red'}));
+    this.monsterInfoGroup.add(this.createTextLayer(90,280, `Hp: ${monster.health}/${monster.maxHp}`, {fill: 'red'}));
+    this.layer.add(this.monsterInfoGroup);
     this.layer.add(this.monsterGroup);
   }
   initFieldCanvas(): void {
@@ -174,7 +178,7 @@ export class CanvasService {
       cornerRadius: 10,
     });
   }
-  createTextLayer(x: number, y: number, text: string) {
+  createTextLayer(x: number, y: number, text: string, otp?: any) {
     return new Konva.Text({
       x,
       y,
@@ -183,6 +187,7 @@ export class CanvasService {
       fontFamily: 'Calibri',
       fill: 'green',
       listening: false,
-    });;
+      ...otp,
+    });
   }
 }

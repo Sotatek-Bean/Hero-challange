@@ -81,7 +81,7 @@ export class PlayLoopService {
           break;
       }
     } else {
-      const animation = this.canvasService.startAnimation(this.canvasService.monsterGroup, AnimationType.attack, 100, 300);
+      const animation = this.canvasService.startAnimation(this.canvasService.monsterGroup, AnimationType.attack, 100, 200);
       await new Promise<void>((resolve) => {
         setTimeout(() => {
           animation.stop();

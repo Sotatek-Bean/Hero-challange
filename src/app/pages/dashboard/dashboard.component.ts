@@ -4,6 +4,7 @@ import { EntityService } from '../../services/entity.service';
 import { CommonModule } from '@angular/common';
 import { Actions, PlayLoopService } from '../../services/play-loop.service';
 import { firstValueFrom } from 'rxjs';
+import { CanvasService } from '../../services/canvas.serivce';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,16 +12,18 @@ import { firstValueFrom } from 'rxjs';
   styleUrls: [ './dashboard.component.css' ],
   standalone: true,
   imports: [CommonModule],
-  providers: [PlayLoopService]
+  providers: [PlayLoopService, CanvasService]
 })
 export class DashboardComponent implements OnInit {
   heroes: Hero[] = [];
   readonly action = Actions;
   private entityService = inject(EntityService);
   playLoopService = inject(PlayLoopService);
+  private canvasService = inject(CanvasService);
 
   ngOnInit(): void {
     this.getHeroes();
+    this.canvasService.initFieldCanvas();
   }
 
   getHeroes(): void {
@@ -34,5 +37,6 @@ export class DashboardComponent implements OnInit {
     }
     const heroFightStats = {...hero, ...(await firstValueFrom(this.entityService.getHeroFightStats(hero.id)))};
     this.playLoopService.setCurrentHero(heroFightStats);
+    this.canvasService.initHero(heroFightStats);
   }
 }

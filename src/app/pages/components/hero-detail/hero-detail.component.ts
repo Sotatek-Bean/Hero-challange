@@ -26,4 +26,12 @@ export class HeroDetailComponent {
       alert('Not enough money');
     }
   }
+  levelUp(hero: Hero) {
+    if (this.userService.money > hero.cost * hero.level) {
+      this.userService.addMoney(-(hero.cost * hero.level));
+      hero.level++;
+    } else {
+      alert('Not enough money');
+    }
+  }
 }

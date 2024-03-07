@@ -3,11 +3,22 @@ import Konva from 'konva';
 import { Stage } from 'konva/lib/Stage';
 import { Hero, Monster } from '../models/common-models';
 import { Actions, PlayLoopService } from './play-loop.service';
-
+import { Group } from 'konva/lib/Group';
+export enum AnimationType {
+  attack = 'attack',
+}
 @Injectable()
 export class CanvasService {
   field: Stage | undefined;
   layer = new Konva.Layer();
+  heroGroup = new Konva.Group({
+    x: 100,
+    y: 350,
+  });
+  monsterGroup = new Konva.Group({
+    x: 700,
+    y: 200,
+  });
   initAction(playLoopService: PlayLoopService) {
     const actionGroup = new Konva.Group({
       x: 0,
@@ -32,13 +43,38 @@ export class CanvasService {
       actionGroup.hide();
     });
     attackGroup.on('click', () => {
-      playLoopService.doAction(Actions.attack);
+      const animation = this.startAnimation(this.heroGroup, AnimationType.attack);
+      setTimeout(() => {
+        animation.stop();
+        this.heroGroup.x(100);
+        this.heroGroup.y(350);
+        playLoopService.doAction(Actions.attack);
+      }, 1500);
       actionGroup.hide();
     });
     actionGroup.add(attackGroup);
     actionGroup.add(healGroup);
     this.layer.add(actionGroup);
     return actionGroup;
+  }
+  startAnimation(target: Group, type: AnimationType) {
+    const animation = new Konva.Animation((frame) => {
+      if (frame) {
+        const duration = 1500; //ms
+        switch(type) {
+          // attack animations
+          case AnimationType.attack:
+            target.x(
+              100 * Math.sin((frame.time * 2 * Math.PI) / duration) + 100
+            );
+            target.y(
+              100 * Math.cos((frame.time* 8 * Math.PI) / duration) + 300
+            );
+        }
+      }
+    }, this.layer);
+    animation.start();
+    return animation;
   }
   initStartBtn(playLoopService: PlayLoopService) {
     const startBtnGroup = new Konva.Group({
@@ -54,22 +90,14 @@ export class CanvasService {
     this.layer.add(startBtnGroup);
   }
   initHero(hero: Hero) {
-    const heroGroup = new Konva.Group({
-      x: 100,
-      y: 350,
-    });
-    heroGroup.add(this.createImageLayer(0, 0, 250, 250, hero.avatar || hero.name));
-    this.layer.add(heroGroup);
-    return heroGroup;
+    this.heroGroup.destroyChildren();
+    this.heroGroup.add(this.createImageLayer(0, 0, 250, 250, hero.avatar || hero.name));
+    this.layer.add(this.heroGroup);
   }
   initMonster(hero: Monster) {
-    const monsterGroup = new Konva.Group({
-      x: 700,
-      y: 200,
-    });
-    monsterGroup.add(this.createImageLayer(0, 0, 250, 250, hero.avatar || hero.name));
-    this.layer.add(monsterGroup);
-    return monsterGroup;
+    this.monsterGroup.destroyChildren();
+    this.monsterGroup.add(this.createImageLayer(0, 0, 250, 250, hero.avatar || hero.name));
+    this.layer.add(this.monsterGroup);
   }
   initFieldCanvas(): void {
     const width = 1082;
@@ -114,6 +142,7 @@ export class CanvasService {
       fontSize: 15,
       fontFamily: 'Calibri',
       fill: 'green',
+      listening: false,
     });;
   }
 }

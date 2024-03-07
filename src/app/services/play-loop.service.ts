@@ -48,7 +48,9 @@ export class PlayLoopService {
       // 50% success
       if (Math.random() < 0.5) {
         //give item
-
+        const drop = this.entityService.generateItem(hero);
+        this.entityService.addItem(drop);
+        this.messageService.add(`Drop new item: ${drop.name}`);
       }
     }
     this.paused = true;

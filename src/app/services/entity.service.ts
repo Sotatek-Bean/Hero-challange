@@ -10,8 +10,8 @@ import { now } from 'lodash';
 export class EntityService {
   heroes$ = new BehaviorSubject(HEROES);
   items$ = new BehaviorSubject(BASE_ITEMS);
-  getRandomInt(max: number) {
-    return Math.floor(Math.random() * max);
+  getRandomInt(max: number, add: number = 0) {
+    return Math.floor(Math.random() * max) + add;
   }
   generateMonsterFight(hero: Hero): Monster {
     const monster: Monster = {...MONSTER[this.getRandomInt(MONSTER.length)], level: hero.level};
@@ -34,16 +34,21 @@ export class EntityService {
     return this.items$.pipe(map(items => items.filter(i => i.type === EntityType.armor)));
   }
 
-  generateItem(hero: Hero) {
-    const item = DefaultItem(hero, now());
-    item.level = this.getRandomInt(hero.level + 1);
+  generateItem(hero: Hero): Item {
+    const item = DefaultItem(now(), '');
+    item.level = this.getRandomInt(hero.level + 1, 1);
     if (item.type === EntityType.armor) {
-      item.health = this.getRandomInt(50);
-      item.speed = this.getRandomInt(5);
+      item.health = this.getRandomInt(50, 1);
+      item.speed = this.getRandomInt(5, 1);
     } else {
-      item.atk = this.getRandomInt(5);
-      item.speed = this.getRandomInt(5);
+      item.atk = this.getRandomInt(5, 1);
+      item.speed = this.getRandomInt(5, 1);
     }
+    return item;
+  }
+
+  addItem(item: Item) {
+    this.items$.next([...this.items$.value,item]);
   }
 
   removeItem(item: Item) {

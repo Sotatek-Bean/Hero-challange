@@ -19,7 +19,6 @@ export class PlayLoopService {
   fightHero: Hero | undefined;
   hero: Hero | undefined;
   monster: Monster | undefined;
-  waitingAction = false;
   paused = true;
   action$ = new Subject<Actions>();
   actionGroup: Group | undefined;
@@ -32,6 +31,8 @@ export class PlayLoopService {
   setCurrentHero(hero: Hero) {
     this.fightHero = hero;
     this.hero = cloneDeep(this.fightHero);
+    this.canvasService.initHero(this.hero);
+    this.canvasService.initStartBtn(this);
   }
   startBattle() {
     if (!this.fightHero) {
@@ -40,7 +41,6 @@ export class PlayLoopService {
     this.actionGroup = this.canvasService.initAction(this);
     this.hero = cloneDeep(this.fightHero);
     this.paused = false;
-    this.waitingAction = false;
     this.monster = this.entityService.generateMonsterFight(this.hero);
     this.monster.maxHp = this.monster.health;
     this.canvasService.initMonster(this.monster);
@@ -108,7 +108,6 @@ export class PlayLoopService {
 
   getUserAction(): Promise<Actions> {
     this.messageService.add('Wait User action');
-    this.waitingAction = true;
     this.actionGroup?.show();
     return firstValueFrom(this.action$);
   }

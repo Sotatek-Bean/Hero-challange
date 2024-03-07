@@ -20,6 +20,11 @@ export class CanvasService {
     x: 700,
     y: 200,
   });
+
+  startBtnGroup = new Konva.Group({
+    x: 490,
+    y: 300,
+  });
   initAction(playLoopService: PlayLoopService) {
     const actionGroup = new Konva.Group({
       x: 0,
@@ -95,25 +100,30 @@ export class CanvasService {
     return animation;
   }
   initStartBtn(playLoopService: PlayLoopService) {
-    const startBtnGroup = new Konva.Group({
+    this.startBtnGroup.destroy();
+    this.startBtnGroup = new Konva.Group({
       x: 490,
       y: 300,
     });
-    startBtnGroup.add(this.createButtonLayer(0, 0));
-    startBtnGroup.add(this.createTextLayer(35,20, 'Start'))
-    startBtnGroup.on('click', () => {
+    this.startBtnGroup.add(this.createButtonLayer(0, 0));
+    this.startBtnGroup.add(this.createTextLayer(35,20, 'Start'))
+    this.startBtnGroup.on('click', () => {
       playLoopService.startBattle();
-      startBtnGroup.destroy();
+      this.startBtnGroup.destroy();
     });
-    this.layer.add(startBtnGroup);
+    this.layer.add(this.startBtnGroup);
   }
   initHero(hero: Hero) {
-    this.heroGroup.destroyChildren();
+    this.heroGroup.destroy();
+    this.heroGroup = new Konva.Group({
+      x: 100,
+      y: 350,
+    });
     this.heroGroup.add(this.createImageLayer(0, 0, 250, 250, hero.avatar || hero.name));
     this.layer.add(this.heroGroup);
   }
   initMonster(hero: Monster) {
-    this.monsterGroup.destroyChildren();
+    this.monsterGroup.destroy();
     this.monsterGroup.add(this.createImageLayer(0, 0, 250, 250, hero.avatar || hero.name));
     this.layer.add(this.monsterGroup);
   }

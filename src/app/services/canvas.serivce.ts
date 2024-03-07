@@ -40,6 +40,19 @@ export class CanvasService {
     this.layer.add(actionGroup);
     return actionGroup;
   }
+  initStartBtn(playLoopService: PlayLoopService) {
+    const startBtnGroup = new Konva.Group({
+      x: 490,
+      y: 300,
+    });
+    startBtnGroup.add(this.createButtonLayer(0, 0));
+    startBtnGroup.add(this.createTextLayer(35,20, 'Start'))
+    startBtnGroup.on('click', () => {
+      playLoopService.startBattle();
+      startBtnGroup.destroy();
+    });
+    this.layer.add(startBtnGroup);
+  }
   initHero(hero: Hero) {
     const heroGroup = new Konva.Group({
       x: 100,

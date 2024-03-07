@@ -4,7 +4,7 @@ import { EntityService } from './entity.service';
 import {
   cloneDeep
 } from 'lodash';
-import { Subject, firstValueFrom } from 'rxjs';
+import { Subject, filter, firstValueFrom } from 'rxjs';
 import { MessageService } from './message.service';
 import { UserService } from './user.service';
 import { AnimationType, CanvasService } from './canvas.serivce';
@@ -48,7 +48,6 @@ export class PlayLoopService {
     this.startTurnLoop(this.hero, this.monster, this.fightHero);
   }
   endBattle(playerWin: boolean, hero: Hero) {
-    this.messageService.add('Battle Ended');
     if (playerWin) {
       this.userService.addMoney(hero.level * 10);
       // 50% success
@@ -59,6 +58,7 @@ export class PlayLoopService {
         this.messageService.add(`Drop new item: ${drop.name}`);
       }
     }
+    this.paused = true;
     this.canvasService.initStartBtn(this);
   }
   async startTurnLoop(hero: Hero, monster: Monster, heroBase: Hero) {
@@ -66,7 +66,6 @@ export class PlayLoopService {
       const action = await this.getUserAction();
       switch(action) {
         case Actions.attack:
-          this.messageService.add('Hero attack');
           monster.health = monster.health - hero.atk;
           break;
         case Actions.heal:
@@ -107,9 +106,8 @@ export class PlayLoopService {
   }
 
   getUserAction(): Promise<Actions> {
-    this.messageService.add('Wait User action');
     this.actionGroup?.show();
-    return firstValueFrom(this.action$);
+    return firstValueFrom(this.action$.pipe(filter(() => !this.paused)));
   }
 
 }

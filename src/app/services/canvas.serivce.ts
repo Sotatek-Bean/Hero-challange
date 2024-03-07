@@ -6,6 +6,7 @@ import { Actions, PlayLoopService } from './play-loop.service';
 import { Group } from 'konva/lib/Group';
 export enum AnimationType {
   attack = 'attack',
+  heal = 'heal',
 }
 @Injectable()
 export class CanvasService {
@@ -39,17 +40,23 @@ export class CanvasService {
     healGroup.add(this.createButtonLayer(0, 0));
     healGroup.add(this.createTextLayer(35,20, 'Heal'))
     healGroup.on('click', () => {
-      playLoopService.doAction(Actions.heal);
+      const animation = this.startAnimation(this.heroGroup, AnimationType.heal, 100, 300);
+      setTimeout(() => {
+        animation.stop();
+        this.heroGroup.x(100);
+        this.heroGroup.y(350);
+        playLoopService.doAction(Actions.heal);
+      }, 1000);
       actionGroup.hide();
     });
     attackGroup.on('click', () => {
-      const animation = this.startAnimation(this.heroGroup, AnimationType.attack);
+      const animation = this.startAnimation(this.heroGroup, AnimationType.attack, 700, 50);
       setTimeout(() => {
         animation.stop();
         this.heroGroup.x(100);
         this.heroGroup.y(350);
         playLoopService.doAction(Actions.attack);
-      }, 1500);
+      }, 1000);
       actionGroup.hide();
     });
     actionGroup.add(attackGroup);
@@ -57,19 +64,30 @@ export class CanvasService {
     this.layer.add(actionGroup);
     return actionGroup;
   }
-  startAnimation(target: Group, type: AnimationType) {
+  startAnimation(target: Group, type: AnimationType, posX: number, possY: number) {
     const animation = new Konva.Animation((frame) => {
       if (frame) {
-        const duration = 1500; //ms
+        let duration = 1000; //ms
         switch(type) {
           // attack animations
           case AnimationType.attack:
             target.x(
-              100 * Math.sin((frame.time * 2 * Math.PI) / duration) + 100
+              100 * Math.sin((frame.time * 2 * Math.PI) / duration) + posX
             );
             target.y(
-              100 * Math.cos((frame.time* 8 * Math.PI) / duration) + 300
+              100 * Math.cos((frame.time* 8 * Math.PI) / duration) + possY
             );
+            break
+          // healing animations
+          case AnimationType.heal:
+            duration = 1000;
+            target.x(
+              100 * Math.sin((frame.time * 2 * Math.PI) / duration) + posX
+            );
+            target.y(
+              100 * Math.cos((frame.time* 2 * Math.PI) / duration) + possY
+            );
+            break
         }
       }
     }, this.layer);

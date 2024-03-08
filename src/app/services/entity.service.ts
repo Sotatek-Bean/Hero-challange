@@ -8,7 +8,9 @@ import { now } from 'lodash';
 
 @Injectable({ providedIn: 'root' })
 export class EntityService {
+  // user's heroes data
   heroes$ = new BehaviorSubject(HEROES);
+  // user's inventory items data
   items$ = new BehaviorSubject(BASE_ITEMS);
   setHeroInfo(heroes: Hero[]) {
     this.heroes$.next(heroes);
@@ -16,9 +18,11 @@ export class EntityService {
   setInventoryInfo(items: Item[]) {
     this.items$.next(items);
   }
+  // random from "add" to "max"
   getRandomInt(max: number, add: number = 0) {
     return Math.floor(Math.random() * max) + add;
   }
+  // random then show true fight stats of monster = stats * level
   generateMonsterFight(hero: Hero): Monster {
     const monster: Monster = {...MONSTER[this.getRandomInt(MONSTER.length)], level: hero.level};
     return {...monster, ...this.convertTrueStats(monster, monster.level)};
@@ -44,11 +48,11 @@ export class EntityService {
     const item = DefaultItem(now());
     item.level = this.getRandomInt(hero.level + 1, 1);
     let identity = {name: ''};
-    if (item.type === EntityType.armor) {
+    if (item.type === EntityType.armor) { // generate armor
       item.health = this.getRandomInt(50, 1);
       item.speed = this.getRandomInt(5, 1);
       identity = ARMOR_TYPES[this.getRandomInt(ARMOR_TYPES.length)];
-    } else {
+    } else { // generate weapon
       item.atk = this.getRandomInt(5, 1);
       item.speed = this.getRandomInt(5, 1);
       identity = WEAPON_TYPES[this.getRandomInt(WEAPON_TYPES.length)];
@@ -56,10 +60,12 @@ export class EntityService {
     return {...item, ...identity};
   }
 
+  // add item to inventory
   addItem(item: Item) {
     this.items$.next([...this.items$.value,item]);
   }
 
+  // remove item from inventory
   removeItem(item: Item) {
     this.items$.next(this.items$.value.filter(i => item.id != i.id));
   }
@@ -72,6 +78,7 @@ export class EntityService {
     return this.heroes$.pipe(switchMap((heroes) => {
       const hero = heroes.find(h => h.id === heroId);
       if (hero) {
+        // hero true stats + weapon true stats + armor true stats
         const arrayStats = [this.convertTrueStats(hero, hero.level)];
         const weapon = this.items$.value.find(i => i.id === hero.equip[EntityType.weapon]);
         const armor = this.items$.value.find(i => i.id === hero.equip[EntityType.armor]);

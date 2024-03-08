@@ -1,7 +1,9 @@
 <div class="d-flex justify-content-between">
   <h1>{{title}}</h1>
   <h4>
-    <button (click)="userService.resetData()">Reset Save</button><button (click)="userService.saveUserData()">Save Data</button>Money: {{userService.money | number}}
+    <button (click)="userService.resetData()">Reset Save</button>
+    <button (click)="userService.saveUserData()">Save Data</button>
+    Money: {{userService.money | number}}
   </h4>
 </div>
 <nav>

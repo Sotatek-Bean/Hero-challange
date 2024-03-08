@@ -1,10 +1,11 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Hero, Item } from '../../../models/common-models';
 import { EntityService } from '../../../services/entity.service';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-inventory',
@@ -17,17 +18,23 @@ export class InventoryComponent implements OnInit {
   @Input({required:true}) hero?: Hero;
   private entityService = inject(EntityService);
   private userService = inject(UserService);
+  private destroyRef = inject(DestroyRef);
 
   armors: Item[] = [];
   weapons: Item[] = [];
+  private unsub$ = new Subject<void>();
 
   ngOnInit(): void {
+    this.destroyRef.onDestroy(() => {
+      this.unsub$.next();
+      this.unsub$.complete();
+    });
     this.setupInventory();
   }
   setupInventory() {
-    this.entityService.getArmors()
+    this.entityService.getArmors().pipe(takeUntil(this.unsub$))
     .subscribe(armors => this.armors = armors);
-    this.entityService.getWeapons()
+    this.entityService.getWeapons().pipe(takeUntil(this.unsub$))
     .subscribe(weapons => this.weapons = weapons);
   }
 

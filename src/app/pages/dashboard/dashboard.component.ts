@@ -1,9 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { Hero } from '../../models/common-models';
 import { EntityService } from '../../services/entity.service';
 import { CommonModule } from '@angular/common';
 import { Actions, PlayLoopService } from '../../services/play-loop.service';
-import { firstValueFrom } from 'rxjs';
+import { Subject, firstValueFrom, takeUntil } from 'rxjs';
 import { CanvasService } from '../../services/canvas.service';
 
 @Component({
@@ -17,17 +17,24 @@ import { CanvasService } from '../../services/canvas.service';
 export class DashboardComponent implements OnInit {
   heroes: Hero[] = [];
   readonly action = Actions;
+  private unsub$ = new Subject<void>();
+
   private entityService = inject(EntityService);
   playLoopService = inject(PlayLoopService);
   private canvasService = inject(CanvasService);
+  private destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
+    this.destroyRef.onDestroy(() => {
+      this.unsub$.next();
+      this.unsub$.complete();
+    });
     this.getHeroes();
     this.canvasService.initFieldCanvas();
   }
 
   getHeroes(): void {
-    this.entityService.getHeroes(true)
+    this.entityService.getHeroes(true).pipe(takeUntil(this.unsub$))
       .subscribe(heroes => this.heroes = heroes);
   }
 

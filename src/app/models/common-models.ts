@@ -1,3 +1,5 @@
+import { DestroyRef, inject } from "@angular/core";
+
 export interface Hero extends Entity {
   cost: number;
   unlocked: boolean;

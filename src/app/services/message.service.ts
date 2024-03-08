@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanvasService } from './canvas.serivce';
+import { CanvasService } from './canvas.service';
 
 @Injectable({ providedIn: 'root' })
 export class MessageService {

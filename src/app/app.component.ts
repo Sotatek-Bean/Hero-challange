@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { UserService } from './services/user.service';
 
@@ -10,7 +10,10 @@ import { UserService } from './services/user.service';
   standalone: true,
   imports: [CommonModule, RouterModule]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'World of the Fantasy';
   userService = inject(UserService);
+  ngOnInit(): void {
+    this.userService.setupSaveData();
+  }
 }

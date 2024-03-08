@@ -7,7 +7,7 @@ import {
 import { Subject, filter, firstValueFrom } from 'rxjs';
 import { MessageService } from './message.service';
 import { UserService } from './user.service';
-import { AnimationType, CanvasService } from './canvas.serivce';
+import { AnimationType, CanvasService } from './canvas.service';
 import { Group } from 'konva/lib/Group';
 export enum Actions {
   attack = 'attack',

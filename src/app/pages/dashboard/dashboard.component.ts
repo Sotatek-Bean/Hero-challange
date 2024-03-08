@@ -4,7 +4,7 @@ import { EntityService } from '../../services/entity.service';
 import { CommonModule } from '@angular/common';
 import { Actions, PlayLoopService } from '../../services/play-loop.service';
 import { firstValueFrom } from 'rxjs';
-import { CanvasService } from '../../services/canvas.serivce';
+import { CanvasService } from '../../services/canvas.service';
 
 @Component({
   selector: 'app-dashboard',

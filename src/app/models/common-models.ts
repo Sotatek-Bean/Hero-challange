@@ -51,3 +51,9 @@ export function DefaultItem(id: number): Item {
     type: Math.random() < 0.5 ? EntityType.armor : EntityType.weapon,
   }
 }
+
+export interface SaveData {
+  money: number,
+  heroes: Hero[],
+  items: Item[],
+}

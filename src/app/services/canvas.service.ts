@@ -165,21 +165,29 @@ export class CanvasService {
   initHeroInfo(hero: Hero) {
     this.heroInfoGroup.destroy();
     this.heroInfoGroup = new Konva.Group({
-      x: 100,
+      x: 95,
       y: 350,
     });
     let hpWidth = 160;
     let hpColor = 'lightGreen';
+    let stroke = undefined;
+    let heroHPText = `Hp: ${Math.max(hero.health, 0)}/${hero.maxHp}`;
     if (hero.maxHp && hero.health > 0) {
       const ratio = hero.health/hero.maxHp;
       hpWidth = 160 * ratio;
       if (ratio < 0.5) { //show red when <50%
         hpColor = 'red';
+        stroke = 'red';
       }
     }
-    this.heroInfoGroup.add(this.createRecLayer(30,250, {width: 200, height: 70, fill: '#F6F5F5', opacity: 0.2}));
+    if (hero.health<=0) {
+      hpColor = 'red';
+      stroke = 'red';
+      heroHPText = `Hero Fainted`;
+    }
+    this.heroInfoGroup.add(this.createRecLayer(30,250, {width: 200, height: 70, fill: '#F6F5F5', opacity: 0.2, stroke}));
     this.heroInfoGroup.add(this.createTextLayer(80,260, `${hero.name} - Lv.${hero.level}`, {fill: '#0C359E'}));
-    this.heroInfoGroup.add(this.createTextLayer(90,280, `Hp: ${hero.health}/${hero.maxHp}`, {fill: '#0C359E'}));
+    this.heroInfoGroup.add(this.createTextLayer(90,280, heroHPText, {fill: '#0C359E'}));
     this.heroInfoGroup.add(this.createRecLayer(50,300, {width: hpWidth, height: 10, fill: hpColor}));
     this.layer.add(this.heroInfoGroup);
   }
@@ -198,21 +206,23 @@ export class CanvasService {
   initMonsterInfo(monster: Monster) {
     this.monsterInfoGroup.destroy();
     this.monsterInfoGroup = new Konva.Group({
-      x: 700,
+      x: 695,
       y: 200,
     });
     let hpWidth = 160;
     let hpColor = 'lightGreen';
-    if (monster.maxHp && monster.health > 0) {
+    let stroke = undefined;
+    if (monster.maxHp) {
       const ratio = monster.health/monster.maxHp;
       hpWidth = 160 * ratio;
       if (ratio < 0.5) { //show red when <50%
         hpColor = 'red';
+        stroke = 'red';
       }
     }
-    this.monsterInfoGroup.add(this.createRecLayer(30,250, {width: 200, height: 70, fill: '#BED1CF', opacity: 0.3, shadowBlur: 3}));
+    this.monsterInfoGroup.add(this.createRecLayer(30,250, {width: 200, height: 70, fill: '#BED1CF', opacity: 0.3, shadowBlur: 3, stroke}));
     this.monsterInfoGroup.add(this.createTextLayer(80,260, `${monster.name} - Lv.${monster.level}`, {fill: 'red'}));
-    this.monsterInfoGroup.add(this.createTextLayer(90,280, `Hp: ${monster.health}/${monster.maxHp}`, {fill: '#FFF7F1'}));
+    this.monsterInfoGroup.add(this.createTextLayer(90,280, `Hp: ${Math.max(monster.health, 0)}/${monster.maxHp}`, {fill: '#FFF7F1'}));
     this.monsterInfoGroup.add(this.createRecLayer(50,300, {width: hpWidth, height: 10, fill: hpColor}));
     this.layer.add(this.monsterInfoGroup);
   }

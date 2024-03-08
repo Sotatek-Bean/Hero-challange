@@ -144,13 +144,20 @@ export class CanvasService {
     this.layer.add(this.startBtnGroup);
   }
 
-  initHero(hero: Hero) {
+  initHero(hero: Hero, playLoopService: PlayLoopService) {
     this.heroGroup.destroy();
     this.heroGroup = new Konva.Group({
       x: 100,
       y: 350,
     });
     this.heroGroup.add(this.createImageLayer(0, 0, 250, 250, hero.avatar || hero.name));
+    this.heroGroup.on('click', () => {
+      if (playLoopService.paused) {
+        playLoopService.clearHero();
+        this.heroGroup.destroy();
+        this.heroInfoGroup.destroy();
+      }
+    });
     this.initHeroInfo(hero);
     this.layer.add(this.heroGroup);
   }

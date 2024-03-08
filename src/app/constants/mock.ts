@@ -28,16 +28,16 @@ export const MONSTER: Monster[] = [
 // group name and background for randomize
 export const WEAPON_TYPES: Identity[] = [
   { name: 'Red Dagger', avatar: 'assets/w1.jpg'},
-  { name: 'Titanium Axe', avatar: 'assets/w2.jpg', },
-  { name: 'Bow Ark', avatar: 'assets/w3.jpg', },
-  { name: 'Ice Gun', avatar: 'assets/w4.jpg', },
-  { name: 'M.Rifle', avatar: 'assets/w5.jpg', },
+  { name: 'Titanium Axe', avatar: 'assets/w2.jpg'},
+  { name: 'Bow Ark', avatar: 'assets/w3.jpg'},
+  { name: 'Ice Gun', avatar: 'assets/w4.jpg'},
+  { name: 'M.Rifle', avatar: 'assets/w5.jpg'},
 ];
 // group name and background for randomize
 export const ARMOR_TYPES: Identity[] = [
-  { name: 'Iron Shield', avatar: 'assets/am3.jpg', },
-  { name: 'Iron Armor', avatar: 'assets/am1.jpg', },
-  { name: 'Helmet', avatar: 'assets/am2.jpg', },
+  { name: 'Iron Shield', avatar: 'assets/am3.jpg'},
+  { name: 'Iron Armor', avatar: 'assets/am1.jpg'},
+  { name: 'Helmet', avatar: 'assets/am2.jpg'},
 ];
 
 // default data init when first play or reset
@@ -47,10 +47,11 @@ export const DEFAULT_SAVE: SaveData = {
   money: 200,
 }
 
-export const SAVE_KEY = 'bean-hero-challange';
 // setting for battle field
 export const BATTLE_FIELD = {
   background: 'assets/field.png',
   width: 1082,
   height: 672,
 };
+
+export const SAVE_KEY = 'bean-hero-challange';

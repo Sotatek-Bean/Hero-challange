@@ -34,12 +34,17 @@ export class PlayLoopService {
   private messageService = inject(MessageService);
   private userService = inject(UserService);
   private canvasService = inject(CanvasService);
+
+  clearHero() {
+    this.hero = undefined;
+    this.fightHero = undefined;
+  }
   // set main fighting hero, todo: add list hero + button change the fighting hero
   setCurrentHero(hero: Hero) {
     this.fightHero = hero;
     this.hero = cloneDeep(this.fightHero);
     this.hero.maxHp = this.hero.health;
-    this.canvasService.initHero(this.hero);
+    this.canvasService.initHero(this.hero, this);
     this.canvasService.initStartBtn(this);
   }
   startBattle() {

@@ -45,7 +45,7 @@ export const DEFAULT_SAVE: SaveData = {
   heroes: HEROES,
   items: BASE_ITEMS,
   money: 200,
-}
+};
 
 // setting for battle field
 export const BATTLE_FIELD = {

@@ -23,6 +23,7 @@
             Sell: {{weapon.level * 10}}
           </span>
         </div>
+        <img [src]="weapon.avatar" alt="">
         <div class="d-flex justify-content-between">
           <button (click)="equipItem(weapon)">{{hero.equip[weapon.type] === weapon.id ? 'Remove' : 'Equip'}}</button>
           <button (click)="sellItem(weapon)">Sell</button>
@@ -51,7 +52,7 @@
             Sell: {{armor.level * 10}}
           </span>
         </div>
-
+        <img [src]="armor.avatar" alt="">
         <div class="d-flex justify-content-between">
           <button (click)="equipItem(armor)">{{hero.equip[armor.type] === armor.id ? 'Remove' : 'Equip'}}</button>
           <button (click)="sellItem(armor)">Sell</button>

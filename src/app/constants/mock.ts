@@ -8,10 +8,14 @@ export const HEROES: Hero[] = [
 ];
 // first init data inventory's items
 export const BASE_ITEMS: Item[] = [
-  { id: 1, name: 'Base Armor', avatar: 'assets/sprite1.png', type: EntityType.armor, level: 1, health: 10},
-  { id: 2, name: 'Hand Gun', avatar: 'assets/sprite1.png', type: EntityType.weapon, level: 1, atk: 2, speed: 1},
-  { id: 3, name: 'Weapon', avatar: 'assets/sprite1.png', type: EntityType.weapon, level: 1, atk: 4, speed: 0},
-  { id: 4, name: 'Gun', avatar: 'assets/sprite1.png', type: EntityType.weapon, level: 1, atk: 1, speed: 2},
+  { id: 1, name: 'Iron Shield', avatar: 'assets/am3.jpg', type: EntityType.armor, level: 1, health: 20},
+  { id: 2, name: 'Iron Armor', avatar: 'assets/am1.jpg', type: EntityType.armor, level: 2, health: 10},
+  { id: 3, name: 'Helmet', avatar: 'assets/am2.jpg', type: EntityType.armor, level: 1, health: 20},
+  { id: 4, name: 'Ice Gun', avatar: 'assets/w4.jpg', type: EntityType.weapon, level: 1, atk: 2, speed: 1},
+  { id: 5, name: 'Titanium Axe', avatar: 'assets/w2.jpg', type: EntityType.weapon, level: 1, atk: 4, speed: 0},
+  { id: 6, name: 'M.Rifle', avatar: 'assets/w5.jpg', type: EntityType.weapon, level: 1, atk: 1, speed: 2},
+  { id: 7, name: 'Red Dagger', avatar: 'assets/w1.jpg', type: EntityType.weapon, level: 2, atk: 1, speed: 1},
+  { id: 8, name: 'Bow Ark', avatar: 'assets/w3.jpg', type: EntityType.weapon, level: 1, atk: 1, speed: 1},
 ];
 
 // Monster Types to random from
@@ -23,17 +27,17 @@ export const MONSTER: Monster[] = [
 ];
 
 export const WEAPON_TYPES: Identity[] = [
-  { name: 'Iron Sword', avatar: '', },
-  { name: 'Iron Axe', avatar: '', },
-  { name: 'Bow', avatar: '', },
-  { name: 'Hand Gun', avatar: '', },
-  { name: 'Rifle', avatar: '', },
+  { name: 'Red Dagger', avatar: 'assets/w1.jpg'},
+  { name: 'Titanium Axe', avatar: 'assets/w2.jpg', },
+  { name: 'Bow Ark', avatar: 'assets/w3.jpg', },
+  { name: 'Ice Gun', avatar: 'assets/w4.jpg', },
+  { name: 'M.Rifle', avatar: 'assets/w5.jpg', },
 ];
 
 export const ARMOR_TYPES: Identity[] = [
-  { name: 'Iron Shield', avatar: '', },
-  { name: 'Iron Armor', avatar: '', },
-  { name: 'Magic Orb', avatar: '', },
+  { name: 'Iron Shield', avatar: 'assets/am3.jpg', },
+  { name: 'Iron Armor', avatar: 'assets/am1.jpg', },
+  { name: 'Helmet', avatar: 'assets/am2.jpg', },
 ];
 
 export const DEFAULT_SAVE: SaveData = {

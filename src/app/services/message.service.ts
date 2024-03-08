@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
+import { CanvasService } from './canvas.serivce';
 
 @Injectable({ providedIn: 'root' })
 export class MessageService {
   messages: string[] = [];
 
-  add(message: string) {
-    this.messages.push(message);
+  add(message: string, canvasService: CanvasService) {
+    this.messages.unshift(message);
+    canvasService.initMessage(this.messages);
   }
 
   clear() {

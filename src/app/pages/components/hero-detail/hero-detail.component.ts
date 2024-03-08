@@ -19,7 +19,7 @@ export class HeroDetailComponent {
   entityService = inject(EntityService);
   userService = inject(UserService);
   unlockHero(hero: Hero) {
-    if (this.userService.money > hero.cost) {
+    if (this.userService.money >= hero.cost) {
       this.userService.addMoney(-hero.cost);
       hero.unlocked = true;
     } else {
@@ -27,7 +27,7 @@ export class HeroDetailComponent {
     }
   }
   levelUp(hero: Hero) {
-    if (this.userService.money > hero.cost * hero.level) {
+    if (this.userService.money >= hero.cost * hero.level) {
       this.userService.addMoney(-(hero.cost * hero.level));
       hero.level++;
     } else {

@@ -1,10 +1,10 @@
 import { EntityType, Hero, Identity, Item, Monster, SaveData } from '../models/common-models';
 // first init data heroes
 export const HEROES: Hero[] = [
-  { id: 1, name: 'Dr. Nice1', avatar: 'assets/sprite1.png', equip: {armor: undefined, weapon: undefined} ,cost: 150, level: 1, atk: 5, health: 200, speed: 5, unlocked: false, type: EntityType.hero},
-  { id: 2, name: 'Dr. Nice2', avatar: 'assets/sprite1.png', equip: {armor: undefined, weapon: undefined} ,cost: 100, level: 1, atk: 5, health: 150, speed: 5, unlocked: true, type: EntityType.hero },
-  { id: 3, name: 'Dr. Nice3', avatar: 'assets/sprite1.png', equip: {armor: undefined, weapon: undefined} ,cost: 200, level: 1, atk: 10, health: 200, speed: 10, unlocked: false, type: EntityType.hero },
-  { id: 4, name: 'Dr. Nice4', avatar: 'assets/sprite1.png', equip: {armor: undefined, weapon: undefined} ,cost: 300, level: 1, atk: 15, health: 300, speed: 15, unlocked: false, type: EntityType.hero },
+  { id: 1, name: 'Elf Mage', avatar: 'assets/sprite1.png', equip: {armor: undefined, weapon: undefined} ,cost: 150, level: 1, atk: 5, health: 200, speed: 5, unlocked: false, type: EntityType.hero},
+  { id: 2, name: 'Soldier 76', avatar: 'assets/sprite3.png', equip: {armor: undefined, weapon: undefined} ,cost: 100, level: 1, atk: 5, health: 150, speed: 5, unlocked: true, type: EntityType.hero },
+  { id: 3, name: 'Dragon Trainer', avatar: 'assets/sprite2.png', equip: {armor: undefined, weapon: undefined} ,cost: 200, level: 1, atk: 10, health: 200, speed: 10, unlocked: false, type: EntityType.hero },
+  { id: 4, name: 'Dragonite', avatar: 'assets/sprite4.png', equip: {armor: undefined, weapon: undefined} ,cost: 300, level: 1, atk: 15, health: 300, speed: 15, unlocked: false, type: EntityType.hero },
 ];
 // first init data inventory's items
 export const BASE_ITEMS: Item[] = [
@@ -16,9 +16,10 @@ export const BASE_ITEMS: Item[] = [
 
 // Monster Types to random from
 export const MONSTER: Monster[] = [
-  { id: 1, name: 'Normal', avatar: 'assets/sprite1.png', type: EntityType.monster, level: 1, atk: 10, health: 50, speed: 2},
-  { id: 2, name: 'Super', avatar: 'assets/sprite1.png', type: EntityType.monster, level: 1, atk: 15, health: 100, speed: 3},
-  { id: 3, name: 'Boss', avatar: 'assets/sprite1.png', type: EntityType.monster, level: 1, atk: 20, health: 150, speed: 4},
+  { id: 1, name: 'Skeleton', avatar: 'assets/m2.png', type: EntityType.monster, level: 1, atk: 10, health: 50, speed: 20},
+  { id: 2, name: 'Zombie MK.3', avatar: 'assets/m1.png', type: EntityType.monster, level: 1, atk: 15, health: 75, speed: 5},
+  { id: 3, name: 'Berserker', avatar: 'assets/m3.png', type: EntityType.monster, level: 1, atk: 25, health: 125, speed: 0},
+  { id: 4, name: 'The Demon', avatar: 'assets/boss.png', type: EntityType.monster, level: 1, atk: 25, health: 200, speed: 15},
 ];
 
 export const WEAPON_TYPES: Identity[] = [

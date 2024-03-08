@@ -24,7 +24,7 @@ export class EntityService {
   }
   // random then show true fight stats of monster = stats * level
   generateMonsterFight(hero: Hero): Monster {
-    const monster: Monster = {...MONSTER[this.getRandomInt(MONSTER.length)], level: hero.level};
+    const monster: Monster = {...MONSTER[this.getRandomInt(MONSTER.length)], level: this.getRandomInt(hero.level, 1)};
     return {...monster, ...this.convertTrueStats(monster, monster.level)};
   }
   getHeroes(onlyUnlocked = false): Observable<Hero[]> {

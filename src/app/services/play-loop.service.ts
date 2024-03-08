@@ -15,12 +15,17 @@ export enum Actions {
 }
 @Injectable()
 export class PlayLoopService {
+  // queue of who make action next
   turnQueue: Entity[] = [];
+  // baseData of hero fighting
   fightHero: Hero | undefined;
+  // hero fighting
   hero: Hero | undefined;
+  // monster fighting
   monster: Monster | undefined;
   // indicate game is playing or not, todo: feature remember last options with pause button
   paused = true;
+  // send signal for user made a choice
   action$ = new Subject<Actions>();
   // group buttons for user actions (attack, heal, ...)
   actionGroup: Group | undefined;

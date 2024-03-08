@@ -4,6 +4,7 @@ import { Stage } from 'konva/lib/Stage';
 import { Hero, Monster } from '../models/common-models';
 import { Actions, PlayLoopService } from './play-loop.service';
 import { Group } from 'konva/lib/Group';
+import { BATTLE_FIELD } from '../constants/mock';
 export enum AnimationType {
   attack = 'attack',
   heal = 'heal',
@@ -12,22 +13,32 @@ export enum AnimationType {
 export class CanvasService {
   field: Stage | undefined;
   layer = new Konva.Layer();
+  // contain hero backgound for animations
   heroGroup = new Konva.Group();
+  // contain hero details with update HP
   heroInfoGroup = new Konva.Group();
+  // contain monster backgound for animations
   monsterGroup = new Konva.Group();
+  // contain monster backgound for animations
   monsterInfoGroup = new Konva.Group();
+  // contain btn start battle
   startBtnGroup = new Konva.Group();
+  // Message box to show messages
   messagesGroup = new Konva.Group();
+
   initMessage(message: string[]) {
     this.messagesGroup.destroy();
     this.messagesGroup = new Konva.Group({
       x: 400,
       y: 50,
     });
-    const reverseMessage = message;
     this.messagesGroup.add(this.createRecLayer(0,0, {width: 300, height: 95, fill: 'white', opacity: 0.4, shadowBlur: 1}));
-    for(let i = 0; i < reverseMessage.length && i < 5; i++) {
-      this.messagesGroup.add(this.createTextLayer(30,10+i*15, reverseMessage[i], { fill: i === 0 ? 'blue' :'white', fontSize: i === 0 ? 18 : 15}))
+    // show top 5 latest messages with first one highlighted
+    for(let i = 0; i < message.length && i < 5; i++) {
+      this.messagesGroup.add(this.createTextLayer(30,10+i*15, message[i], {
+        fill: i === 0 ? 'blue' :'white',
+        fontSize: i === 0 ? 18 : 15,
+      }))
     }
     this.layer.add(this.messagesGroup);
   }
@@ -51,6 +62,8 @@ export class CanvasService {
     });
     healGroup.add(this.createRecLayer(0, 0));
     healGroup.add(this.createTextLayer(35,20, 'Heal'))
+
+    // onclick start animation then do action healing
     healGroup.on('click', () => {
       const animation = this.startAnimation(this.heroGroup, AnimationType.heal, 100, 300);
       setTimeout(() => {
@@ -71,16 +84,24 @@ export class CanvasService {
       }, 1000);
       actionGroup.hide();
     });
+
     actionGroup.add(attackGroup);
     actionGroup.add(healGroup);
     this.layer.add(actionGroup);
     return actionGroup;
   }
-  startAnimation(target: Group, type: AnimationType, posX: number, possY: number) {
+
+  /**
+  * @param target: group will do animation
+  * @param type: type of Animation will do (healing animation/attack animation/...)
+  * @param posX and @param possY: coordinates will run animation at center
+  * @param duration: duration of 1 loop of animation
+  * todo: add more animations
+  */
+  startAnimation(target: Group, type: AnimationType, posX: number, possY: number, duration = 1000) {
     target.moveToTop();
     const animation = new Konva.Animation((frame) => {
       if (frame) {
-        let duration = 1000; //ms
         switch(type) {
           // attack animations
           case AnimationType.attack:
@@ -93,7 +114,6 @@ export class CanvasService {
             break
           // healing animations
           case AnimationType.heal:
-            duration = 1000;
             target.x(
               100 * Math.sin((frame.time * 2 * Math.PI) / duration) + posX
             );
@@ -107,14 +127,16 @@ export class CanvasService {
     animation.start();
     return animation;
   }
-  initStartBtn(playLoopService: PlayLoopService) {
+
+  initStartBtn(playLoopService: PlayLoopService, startText?: string) {
     this.startBtnGroup.destroy();
     this.startBtnGroup = new Konva.Group({
       x: 490,
       y: 300,
     });
     this.startBtnGroup.add(this.createRecLayer(0, 0));
-    this.startBtnGroup.add(this.createTextLayer(35,20, 'Start'))
+    this.startBtnGroup.add(this.createTextLayer(startText ? 16 : 35,20, startText || 'Start'));
+
     this.startBtnGroup.on('click', () => {
       playLoopService.startBattle();
       this.startBtnGroup.destroy();
@@ -132,6 +154,7 @@ export class CanvasService {
     this.initHeroInfo(hero);
     this.layer.add(this.heroGroup);
   }
+  // init HP, name
   initHeroInfo(hero: Hero) {
     this.heroInfoGroup.destroy();
     this.heroInfoGroup = new Konva.Group({
@@ -143,7 +166,7 @@ export class CanvasService {
     if (hero.maxHp && hero.health > 0) {
       const ratio = hero.health/hero.maxHp;
       hpWidth = 160 * ratio;
-      if (ratio < 0.5) {
+      if (ratio < 0.5) { //show red when <50%
         hpColor = 'red';
       }
     }
@@ -153,6 +176,7 @@ export class CanvasService {
     this.heroInfoGroup.add(this.createRecLayer(50,300, {width: hpWidth, height: 10, fill: hpColor}));
     this.layer.add(this.heroInfoGroup);
   }
+
   initMonster(monster: Monster) {
     this.monsterGroup.destroy();
     this.monsterGroup = new Konva.Group({
@@ -163,7 +187,7 @@ export class CanvasService {
     this.initMonsterInfo(monster);
     this.layer.add(this.monsterGroup);
   }
-
+  // init HP, name
   initMonsterInfo(monster: Monster) {
     this.monsterInfoGroup.destroy();
     this.monsterInfoGroup = new Konva.Group({
@@ -175,7 +199,7 @@ export class CanvasService {
     if (monster.maxHp && monster.health > 0) {
       const ratio = monster.health/monster.maxHp;
       hpWidth = 160 * ratio;
-      if (ratio < 0.5) {
+      if (ratio < 0.5) { //show red when <50%
         hpColor = 'red';
       }
     }
@@ -185,16 +209,15 @@ export class CanvasService {
     this.monsterInfoGroup.add(this.createRecLayer(50,300, {width: hpWidth, height: 10, fill: hpColor}));
     this.layer.add(this.monsterInfoGroup);
   }
+
+  // stage canvas
   initFieldCanvas(): void {
-    const width = 1082;
-    const height = 672;
     this.field = new Konva.Stage({
       container: 'playCanvas',
-      width: width,
-      height: height,
+      width: BATTLE_FIELD.width,
+      height: BATTLE_FIELD.height,
     });
-    const backgroundLayer = this.createImageLayer(0, 0, 1082, 672, 'assets/field.png');
-    this.layer.add(backgroundLayer);
+    this.layer.add(this.createImageLayer(0, 0, 1082, 672, BATTLE_FIELD.background));
     this.field.add(this.layer);
   }
 

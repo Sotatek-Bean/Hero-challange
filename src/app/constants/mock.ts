@@ -40,3 +40,11 @@ export const DEFAULT_SAVE: SaveData = {
   items: BASE_ITEMS,
   money: 200,
 }
+
+export const SAVE_KEY = 'bean-hero-challange';
+// setting for battle field
+export const BATTLE_FIELD = {
+  background: 'assets/field.png',
+  width: 1082,
+  height: 672,
+};

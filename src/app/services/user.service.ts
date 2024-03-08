@@ -3,6 +3,7 @@ import { BehaviorSubject} from 'rxjs';
 import { EntityService } from './entity.service';
 import { DEFAULT_SAVE, SAVE_KEY } from '../constants/mock';
 import { SaveData } from '../models/common-models';
+import { cloneDeep } from 'lodash';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -50,6 +51,6 @@ export class UserService {
 
   // reset save data to Default data (reset game)
   resetData() {
-    this.initSaveData(DEFAULT_SAVE);
+    this.initSaveData(cloneDeep(DEFAULT_SAVE));
   }
 }

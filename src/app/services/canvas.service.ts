@@ -171,7 +171,7 @@ export class CanvasService {
       }
     }
     this.heroInfoGroup.add(this.createRecLayer(30,250, {width: 200, height: 70, fill: '#F6F5F5', opacity: 0.2}));
-    this.heroInfoGroup.add(this.createTextLayer(100,260, `${hero.name}`, {fill: '#0C359E'}));
+    this.heroInfoGroup.add(this.createTextLayer(80,260, `${hero.name} - Lv.${hero.level}`, {fill: '#0C359E'}));
     this.heroInfoGroup.add(this.createTextLayer(90,280, `Hp: ${hero.health}/${hero.maxHp}`, {fill: '#0C359E'}));
     this.heroInfoGroup.add(this.createRecLayer(50,300, {width: hpWidth, height: 10, fill: hpColor}));
     this.layer.add(this.heroInfoGroup);
@@ -204,7 +204,7 @@ export class CanvasService {
       }
     }
     this.monsterInfoGroup.add(this.createRecLayer(30,250, {width: 200, height: 70, fill: '#BED1CF', opacity: 0.3, shadowBlur: 3}));
-    this.monsterInfoGroup.add(this.createTextLayer(100,260, `${monster.name}`, {fill: 'red'}));
+    this.monsterInfoGroup.add(this.createTextLayer(80,260, `${monster.name} - Lv.${monster.level}`, {fill: 'red'}));
     this.monsterInfoGroup.add(this.createTextLayer(90,280, `Hp: ${monster.health}/${monster.maxHp}`, {fill: '#FFF7F1'}));
     this.monsterInfoGroup.add(this.createRecLayer(50,300, {width: hpWidth, height: 10, fill: hpColor}));
     this.layer.add(this.monsterInfoGroup);

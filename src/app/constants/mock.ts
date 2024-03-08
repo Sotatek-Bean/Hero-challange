@@ -10,15 +10,15 @@ export const HEROES: Hero[] = [
 export const BASE_ITEMS: Item[] = [
   { id: 1, name: 'Base Armor', avatar: 'assets/sprite1.png', type: EntityType.armor, level: 1, health: 10},
   { id: 2, name: 'Hand Gun', avatar: 'assets/sprite1.png', type: EntityType.weapon, level: 1, atk: 2, speed: 1},
-  { id: 3, name: 'Weapon', avatar: 'assets/sprite1.png', type: EntityType.weapon, level: 1, atk: 3, speed: 0},
+  { id: 3, name: 'Weapon', avatar: 'assets/sprite1.png', type: EntityType.weapon, level: 1, atk: 4, speed: 0},
   { id: 4, name: 'Gun', avatar: 'assets/sprite1.png', type: EntityType.weapon, level: 1, atk: 1, speed: 2},
 ];
 
 // Monster Types to random from
 export const MONSTER: Monster[] = [
-  { id: 1, name: 'Normal', avatar: 'assets/sprite1.png', type: EntityType.monster, level: 1, atk: 10, health: 100, speed: 2},
-  { id: 2, name: 'Super', avatar: 'assets/sprite1.png', type: EntityType.monster, level: 1, atk: 15, health: 300, speed: 3},
-  { id: 3, name: 'Boss', avatar: 'assets/sprite1.png', type: EntityType.monster, level: 1, atk: 20, health: 600, speed: 4},
+  { id: 1, name: 'Normal', avatar: 'assets/sprite1.png', type: EntityType.monster, level: 1, atk: 10, health: 50, speed: 2},
+  { id: 2, name: 'Super', avatar: 'assets/sprite1.png', type: EntityType.monster, level: 1, atk: 15, health: 100, speed: 3},
+  { id: 3, name: 'Boss', avatar: 'assets/sprite1.png', type: EntityType.monster, level: 1, atk: 20, health: 150, speed: 4},
 ];
 
 export const WEAPON_TYPES: Identity[] = [

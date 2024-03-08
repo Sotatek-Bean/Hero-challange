@@ -51,18 +51,21 @@ export class PlayLoopService {
     this.startTurnLoop(this.hero, this.monster, this.fightHero);
   }
   endBattle(playerWin: boolean, hero: Hero) {
+    this.messageService.add(playerWin ? `Victory` : `Game Over`, this.canvasService);
     if (playerWin) {
       this.userService.addMoney(hero.level * 10);
-      // 50% success
-      if (Math.random() < 0.5) {
+      // 80% success
+      if (Math.random() < 0.8) {
         //give item
         const drop = this.entityService.generateItem(hero);
         this.entityService.addItem(drop);
-        this.messageService.add(`Drop new item: ${drop.name}`);
+        this.messageService.add(`Drop new item: ${drop.name}`, this.canvasService);
       }
     }
     this.paused = true;
     this.canvasService.initStartBtn(this);
+    this.canvasService.monsterInfoGroup.destroy();
+    this.canvasService.monsterGroup.destroy();
   }
   async startTurnLoop(hero: Hero, monster: Monster, heroBase: Hero) {
     if (this.turnQueue[0].type === EntityType.hero) {
@@ -70,12 +73,13 @@ export class PlayLoopService {
       switch(action) {
         case Actions.attack:
           monster.health = monster.health - hero.atk;
+          this.messageService.add(`Monster taked ${hero.atk} Damage`, this.canvasService);
           this.canvasService.initMonsterInfo(monster);
           break;
         case Actions.heal:
           const healPercent = Math.round((hero.level / (10 + hero.level)) * 100);
           const heal = Math.round(heroBase.health*healPercent/100);
-          this.messageService.add(`Hero healed ${heal} HP`);
+          this.messageService.add(`Hero healed ${heal} HP`, this.canvasService);
           if (hero.health + heal > heroBase.health) {
             hero.health = heroBase.health;
             break;
@@ -94,6 +98,7 @@ export class PlayLoopService {
         }, 1000);
       })
       hero.health = hero.health - monster.atk;
+      this.messageService.add(`Hero taked ${monster.atk} Damage`, this.canvasService);
     }
     this.canvasService.initHeroInfo(hero);
     if (hero.health <=0 || monster.health <=0) {

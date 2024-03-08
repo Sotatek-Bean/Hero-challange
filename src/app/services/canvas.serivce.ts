@@ -17,6 +17,21 @@ export class CanvasService {
   monsterGroup = new Konva.Group();
   monsterInfoGroup = new Konva.Group();
   startBtnGroup = new Konva.Group();
+  messagesGroup = new Konva.Group();
+  initMessage(message: string[]) {
+    this.messagesGroup.destroy();
+    this.messagesGroup = new Konva.Group({
+      x: 400,
+      y: 50,
+    });
+    const reverseMessage = message;
+    this.messagesGroup.add(this.createRecLayer(0,0, {width: 300, height: 95, fill: 'white', opacity: 0.4, shadowBlur: 1}));
+    for(let i = 0; i < reverseMessage.length && i < 5; i++) {
+      this.messagesGroup.add(this.createTextLayer(30,10+i*15, reverseMessage[i], { fill: i === 0 ? 'blue' :'white', fontSize: i === 0 ? 18 : 15}))
+    }
+    this.layer.add(this.messagesGroup);
+  }
+
   initAction(playLoopService: PlayLoopService) {
     const actionGroup = new Konva.Group({
       x: 0,
@@ -27,14 +42,14 @@ export class CanvasService {
       x: 430,
       y: 500,
     });
-    attackGroup.add(this.createButtonLayer(0, 0));
+    attackGroup.add(this.createRecLayer(0, 0));
     attackGroup.add(this.createTextLayer(30,20, 'Attack'))
 
     const healGroup = new Konva.Group({
       x: 550,
       y: 500,
     });
-    healGroup.add(this.createButtonLayer(0, 0));
+    healGroup.add(this.createRecLayer(0, 0));
     healGroup.add(this.createTextLayer(35,20, 'Heal'))
     healGroup.on('click', () => {
       const animation = this.startAnimation(this.heroGroup, AnimationType.heal, 100, 300);
@@ -98,7 +113,7 @@ export class CanvasService {
       x: 490,
       y: 300,
     });
-    this.startBtnGroup.add(this.createButtonLayer(0, 0));
+    this.startBtnGroup.add(this.createRecLayer(0, 0));
     this.startBtnGroup.add(this.createTextLayer(35,20, 'Start'))
     this.startBtnGroup.on('click', () => {
       playLoopService.startBattle();
@@ -123,8 +138,19 @@ export class CanvasService {
       x: 100,
       y: 350,
     });
-    this.heroInfoGroup.add(this.createTextLayer(100,260, `${hero.name}`, {fill: 'red'}));
-    this.heroInfoGroup.add(this.createTextLayer(90,280, `Hp: ${hero.health}/${hero.maxHp}`, {fill: 'red'}));
+    let hpWidth = 160;
+    let hpColor = 'lightGreen';
+    if (hero.maxHp && hero.health > 0) {
+      const ratio = hero.health/hero.maxHp;
+      hpWidth = 160 * ratio;
+      if (ratio < 0.5) {
+        hpColor = 'red';
+      }
+    }
+    this.heroInfoGroup.add(this.createRecLayer(30,250, {width: 200, height: 70, fill: '#F6F5F5', opacity: 0.2}));
+    this.heroInfoGroup.add(this.createTextLayer(100,260, `${hero.name}`, {fill: '#0C359E'}));
+    this.heroInfoGroup.add(this.createTextLayer(90,280, `Hp: ${hero.health}/${hero.maxHp}`, {fill: '#0C359E'}));
+    this.heroInfoGroup.add(this.createRecLayer(50,300, {width: hpWidth, height: 10, fill: hpColor}));
     this.layer.add(this.heroInfoGroup);
   }
   initMonster(monster: Monster) {
@@ -144,8 +170,19 @@ export class CanvasService {
       x: 700,
       y: 200,
     });
+    let hpWidth = 160;
+    let hpColor = 'lightGreen';
+    if (monster.maxHp && monster.health > 0) {
+      const ratio = monster.health/monster.maxHp;
+      hpWidth = 160 * ratio;
+      if (ratio < 0.5) {
+        hpColor = 'red';
+      }
+    }
+    this.monsterInfoGroup.add(this.createRecLayer(30,250, {width: 200, height: 70, fill: '#BED1CF', opacity: 0.3, shadowBlur: 3}));
     this.monsterInfoGroup.add(this.createTextLayer(100,260, `${monster.name}`, {fill: 'red'}));
-    this.monsterInfoGroup.add(this.createTextLayer(90,280, `Hp: ${monster.health}/${monster.maxHp}`, {fill: 'red'}));
+    this.monsterInfoGroup.add(this.createTextLayer(90,280, `Hp: ${monster.health}/${monster.maxHp}`, {fill: '#FFF7F1'}));
+    this.monsterInfoGroup.add(this.createRecLayer(50,300, {width: hpWidth, height: 10, fill: hpColor}));
     this.layer.add(this.monsterInfoGroup);
   }
   initFieldCanvas(): void {
@@ -172,7 +209,7 @@ export class CanvasService {
       height,
     });
   }
-  createButtonLayer(x: number, y: number) {
+  createRecLayer(x: number, y: number, otp?: any) {
     return new Konva.Rect({
       x,
       y,
@@ -181,6 +218,7 @@ export class CanvasService {
       fill: 'white',
       shadowBlur: 10,
       cornerRadius: 10,
+      ...otp
     });
   }
   createTextLayer(x: number, y: number, text: string, otp?: any) {

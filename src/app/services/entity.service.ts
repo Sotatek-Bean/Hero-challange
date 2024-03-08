@@ -10,6 +10,12 @@ import { now } from 'lodash';
 export class EntityService {
   heroes$ = new BehaviorSubject(HEROES);
   items$ = new BehaviorSubject(BASE_ITEMS);
+  setHeroInfo(heroes: Hero[]) {
+    this.heroes$.next(heroes);
+  }
+  setInventoryInfo(items: Item[]) {
+    this.items$.next(items);
+  }
   getRandomInt(max: number, add: number = 0) {
     return Math.floor(Math.random() * max) + add;
   }

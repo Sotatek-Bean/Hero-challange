@@ -1,4 +1,4 @@
-import { Entity, EntityType, Hero, Identity, Item, Monster } from '../models/common-models';
+import { EntityType, Hero, Identity, Item, Monster, SaveData } from '../models/common-models';
 // first init data heroes
 export const HEROES: Hero[] = [
   { id: 1, name: 'Dr. Nice1', avatar: 'assets/sprite1.png', equip: {armor: undefined, weapon: undefined} ,cost: 150, level: 1, atk: 5, health: 200, speed: 5, unlocked: false, type: EntityType.hero},
@@ -34,3 +34,9 @@ export const ARMOR_TYPES: Identity[] = [
   { name: 'Iron Armor', avatar: '', },
   { name: 'Magic Orb', avatar: '', },
 ];
+
+export const DEFAULT_SAVE: SaveData = {
+  heroes: HEROES,
+  items: BASE_ITEMS,
+  money: 200,
+}

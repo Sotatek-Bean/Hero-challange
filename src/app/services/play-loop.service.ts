@@ -95,7 +95,7 @@ export class PlayLoopService {
       switch(action) {
         case Actions.attack:
           monster.health = monster.health - hero.atk;
-          this.messageService.add(`Monster taked ${hero.atk} Damage`, this.canvasService);
+          this.messageService.add(`${monster.name} taked ${hero.atk} Damage`, this.canvasService);
           // update info HP for monster
           this.canvasService.initMonsterInfo(monster);
           break;
@@ -103,7 +103,7 @@ export class PlayLoopService {
           // heal amount = 100 * (x / (10 + x)); with x = hero level
           const healPercent = Math.round((hero.level / (10 + hero.level)) * 100);
           const heal = Math.round(heroBase.health*healPercent/100);
-          this.messageService.add(`Hero healed ${heal} HP`, this.canvasService);
+          this.messageService.add(`${hero.name} healed ${heal} HP`, this.canvasService);
           if (hero.health + heal > heroBase.health) { // heal must not pass maximun HP
             hero.health = heroBase.health;
             break;
@@ -122,7 +122,7 @@ export class PlayLoopService {
         }, 1000);
       })
       hero.health = hero.health - monster.atk;
-      this.messageService.add(`Hero taked ${monster.atk} Damage`, this.canvasService);
+      this.messageService.add(`${hero.name} taked ${monster.atk} Damage`, this.canvasService);
     }
     // update info HP for hero after: heal or attacked by monster
     this.canvasService.initHeroInfo(hero);

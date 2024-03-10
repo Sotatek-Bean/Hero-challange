@@ -2,7 +2,7 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { Hero } from '../../models/common-models';
 import { EntityService } from '../../services/entity.service';
 import { CommonModule } from '@angular/common';
-import { Actions, PlayLoopService } from '../../services/play-loop.service';
+import { Actions, PlayService } from '../../services/play.service';
 import { Subject, firstValueFrom, takeUntil } from 'rxjs';
 import { CanvasService } from '../../services/canvas.service';
 
@@ -12,7 +12,7 @@ import { CanvasService } from '../../services/canvas.service';
   styleUrls: [ './dashboard.component.css' ],
   standalone: true,
   imports: [CommonModule],
-  providers: [PlayLoopService, CanvasService]
+  providers: [PlayService, CanvasService]
 })
 export class DashboardComponent implements OnInit {
   heroes: Hero[] = [];
@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
   private unsub$ = new Subject<void>();
 
   private entityService = inject(EntityService);
-  playLoopService = inject(PlayLoopService);
+  playService = inject(PlayService);
   private canvasService = inject(CanvasService);
   private destroyRef = inject(DestroyRef);
 
@@ -39,10 +39,10 @@ export class DashboardComponent implements OnInit {
   }
 
   async setHero(hero: Hero) {
-    if (!this.playLoopService.paused) {
+    if (!this.playService.paused) {
       return;
     }
     const heroFightStats = {...hero, ...(await firstValueFrom(this.entityService.getHeroFightStats(hero.id)))};
-    this.playLoopService.setCurrentHero(heroFightStats);
+    this.playService.setCurrentHero(heroFightStats);
   }
 }

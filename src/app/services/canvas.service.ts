@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import Konva from 'konva';
 import { Stage } from 'konva/lib/Stage';
 import { Hero, Monster } from '../models/common-models';
-import { Actions, PlayLoopService } from './play-loop.service';
+import { Actions, PlayService } from './play.service';
 import { Group } from 'konva/lib/Group';
 import { BATTLE_FIELD } from '../constants/mock';
 export enum AnimationType {
@@ -43,7 +43,7 @@ export class CanvasService {
     this.layer.add(this.messagesGroup);
   }
 
-  initAction(playLoopService: PlayLoopService) {
+  initAction(playService: PlayService) {
     const actionGroup = new Konva.Group({
       x: 0,
       y: 0,
@@ -70,7 +70,7 @@ export class CanvasService {
         animation.stop();
         this.heroGroup.x(100);
         this.heroGroup.y(350);
-        playLoopService.doAction(Actions.heal);
+        playService.doAction(Actions.heal);
       }, 1000);
       actionGroup.hide();
     });
@@ -80,7 +80,7 @@ export class CanvasService {
         animation.stop();
         this.heroGroup.x(100);
         this.heroGroup.y(350);
-        playLoopService.doAction(Actions.attack);
+        playService.doAction(Actions.attack);
       }, 1000);
       actionGroup.hide();
     });
@@ -128,7 +128,7 @@ export class CanvasService {
     return animation;
   }
 
-  initStartBtn(playLoopService: PlayLoopService, startText?: string) {
+  initStartBtn(playService: PlayService, startText?: string) {
     this.startBtnGroup.destroy();
     this.startBtnGroup = new Konva.Group({
       x: 490,
@@ -138,13 +138,13 @@ export class CanvasService {
     this.startBtnGroup.add(this.createTextLayer(startText ? 16 : 35,20, startText || 'Start'));
 
     this.startBtnGroup.on('click', () => {
-      playLoopService.startBattle();
+      playService.startBattle();
       this.startBtnGroup.destroy();
     });
     this.layer.add(this.startBtnGroup);
   }
 
-  initHero(hero: Hero, playLoopService: PlayLoopService) {
+  initHero(hero: Hero, playService: PlayService) {
     this.heroGroup.destroy();
     this.heroGroup = new Konva.Group({
       x: 100,
@@ -152,8 +152,8 @@ export class CanvasService {
     });
     this.heroGroup.add(this.createImageLayer(0, 0, 250, 250, hero.avatar || hero.name));
     this.heroGroup.on('click', () => {
-      if (playLoopService.paused) {
-        playLoopService.clearHero();
+      if (playService.paused) {
+        playService.clearHero();
         this.heroGroup.destroy();
         this.heroInfoGroup.destroy();
       }

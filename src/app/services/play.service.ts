@@ -14,7 +14,7 @@ export enum Actions {
   heal = 'heal'
 }
 @Injectable()
-export class PlayLoopService {
+export class PlayService {
   // queue of who make action next
   turnQueue: Entity[] = [];
   // baseData of hero fighting

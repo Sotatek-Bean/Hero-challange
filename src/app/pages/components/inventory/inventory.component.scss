@@ -1,0 +1,23 @@
+.inventory-container {
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  border: solid 1px lightgray;
+  .card {
+    padding: 0.8rem;
+    max-width: 140px;
+    .name {
+      font-weight: bold;
+    }
+    button {
+      font-size: 1rem;
+      padding: 0.5rem;
+      margin: 10px 0 0 0;
+    }
+    img {
+      max-width: 100%;
+    }
+  }
+  .equiped {
+    box-shadow:0 5px 10px 5px rgba(129, 179, 139, 0.76);
+  }
+}

@@ -1,0 +1,7 @@
+<div class="heroes-menu">
+  <a *ngFor="let hero of heroes" (click)="setHero(hero)">
+    {{hero.name}}
+  </a>
+</div>
+<div id="playCanvas" class="d-flex justify-content-center"></div>
+

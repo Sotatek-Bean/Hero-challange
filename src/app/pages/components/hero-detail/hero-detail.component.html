@@ -1,0 +1,26 @@
+@if (hero) {
+  <div class="card">
+    <h2>{{hero.name | uppercase}}</h2>
+    <div>
+      <label for="hero-name">Hero name: </label>
+      <input id="hero-name" [(ngModel)]="hero.name" placeholder="Hero name"/>
+      <div class="stat-details d-flex justify-content-between mt-1">
+        @if (entityService.getHeroFightStats(this.hero.id) | async; as fightStats) {
+          <span>Atk: {{fightStats.atk}}</span>
+          <span>Speed: {{fightStats.speed}}</span>
+          <span>HP: {{fightStats.health}}</span>
+          <span>Level: {{hero.level}}</span>
+        }
+      </div>
+      <img [src]="hero.avatar" alt="avatar">
+      <div class="d-flex justify-content-between">
+        <h4>Cost: {{hero.cost * hero.level}}</h4>
+        @if (!hero.unlocked) {
+          <button (click)="unlockHero(hero)">Unlock</button>
+        } @else {
+          <button (click)="levelUp(hero)">Level Up</button>
+        }
+    </div>
+    </div>
+  </div>
+}

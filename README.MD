@@ -25,4 +25,9 @@ Improvements later:
 - A way to automate the system with "paused" already implemented, now just add a way to remember the last choice
 
 - Way to automate level up Hero: after battle end, check if money/exp enough => call "level up"
+
+- Code:
+    + the part of Hero and Monster init and update of CanvasService can be more abstract and re-useable for more Entities join in the Fight.
+    + setCurrentHero and startBattle in PlayService still have some duplicates.
+      Maybe add a new methods to control the process of preparing datas after hero is set.
 ...
